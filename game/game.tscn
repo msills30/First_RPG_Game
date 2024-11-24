@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://clrxy7rjmm77c"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_fg5j3"]
+[ext_resource type="PackedScene" uid="uid://hpj0mgsxx0p6" path="res://character/character.tscn" id="2_eaiwr"]
+[ext_resource type="Texture2D" uid="uid://ojeyyq2pu1io" path="res://icon.svg" id="3_p4fmo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cn02b"]
+albedo_texture = ExtResource("3_p4fmo")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_efwwu"]
+material = SubResource("StandardMaterial3D_cn02b")
+size = Vector2(5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_waumi"]
+size = Vector3(5.07611, 1, 5.02545)
+
+[node name="Game" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.970296, 0.241922, 0, -0.241922, 0.970296, 0.3863, 1.7642, 4.48749)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 4.02268, 1.48435)
+light_energy = 2.045
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.530987, 2.09525, 3.00421)
+
+[node name="Player" type="Node" parent="." node_paths=PackedStringArray("_character", "_camera")]
+script = ExtResource("1_fg5j3")
+_character = NodePath("../CharacterBody3D")
+_camera = NodePath("../Camera3D")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_eaiwr")]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Meshinstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("PlaneMesh_efwwu")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0362244, -0.456374, -0.0624084)
+shape = SubResource("BoxShape3D_waumi")
