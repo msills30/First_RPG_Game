@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cs0hdqlfiisya"]
+
+[ext_resource type="MeshLibrary" uid="uid://bd47kdneop4ab" path="res://imported_assets/dungeon/dungeon_mesh_2_library.tres" id="1_j75rl"]
+[ext_resource type="Script" path="res://Scripts/level.gd" id="1_tr3ay"]
+[ext_resource type="PackedScene" uid="uid://c5pp3xuab5g24" path="res://Scenes/transition.tscn" id="2_7m8o6"]
+[ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="4_wotx4"]
+
+[node name="Dungeon_1" type="Node3D"]
+script = ExtResource("1_tr3ay")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0139622, 0.999903, 0, -0.999903, -0.0139622, 0.111361, 4.09101, 2.11753)
+light_energy = 0.295
+light_angular_distance = 90.0
+shadow_enabled = true
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_j75rl")
+cell_size = Vector3(1, 1, 1)
+data = {
+"cells": PackedInt32Array(4, 8, 1441878, 4, 5, 1441878, 0, 2, 1441878, 0, 8, 1441878, 65532, 8, 1441878, 4, 2, 1441878, 0, 6, 1441878, 65532, 5, 1441878, 65532, 2, 1441878, 65528, 2, 1441878, 65528, 6, 1441878, 65528, 8, 1441878, 65528, 65534, 1441878, 65532, 65534, 1441878, 65532, 65530, 1441878, 65528, 65530, 1441878, 65532, 65527, 1441878, 65528, 65527, 1441878, 65530, 65525, 655404, 65526, 65525, 1048625, 65534, 65525, 49, 65534, 65529, 1441836, 65534, 65533, 1441843, 65534, 0, 655407, 2, 0, 65, 6, 0, 49, 6, 8, 1048617, 6, 10, 1441841, 65526, 65529, 1048640, 65526, 65533, 1048641, 65526, 1, 1048641, 65526, 5, 1048641, 65526, 10, 655409, 65526, 6, 1048637, 65534, 12, 1048576, 65532, 12, 1048627, 0, 12, 1048627, 65530, 10, 71, 2, 10, 71, 8, 4, 80)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Transitions" type="Node" parent="."]
+
+[node name="ToRoomTwo" parent="Transitions" instance=ExtResource("2_7m8o6")]
+transform = Transform3D(-1, 0, -8.74228e-08, -1.60812e-09, 0.999831, 0.0183947, 8.7408e-08, 0.0183947, -0.999831, -2, 2.49231, 12.3376)
+_connects_to = "dungeon_2"
+
+[node name="ToRoomThree" parent="Transitions" instance=ExtResource("2_7m8o6")]
+transform = Transform3D(-4.37114e-08, -1.74846e-07, -1, 0, 1, -1.74846e-07, 1, -7.64274e-15, -4.37114e-08, 8, 2.60921, 5)
+_connects_to = "dungeon_3"
+
+[node name="Mage" parent="." instance=ExtResource("4_wotx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.06011, 0.549997, -6.55247)

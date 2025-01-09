@@ -1,44 +1,137 @@
-[gd_scene load_steps=7 format=3 uid="uid://clrxy7rjmm77c"]
+[gd_scene load_steps=13 format=3 uid="uid://clrxy7rjmm77c"]
 
-[ext_resource type="Script" path="res://player.gd" id="1_fg5j3"]
-[ext_resource type="PackedScene" uid="uid://hpj0mgsxx0p6" path="res://character/character.tscn" id="2_eaiwr"]
-[ext_resource type="Texture2D" uid="uid://ojeyyq2pu1io" path="res://icon.svg" id="3_p4fmo"]
+[ext_resource type="Script" path="res://Scripts/managers/game_manager.gd" id="1_4f54o"]
+[ext_resource type="Script" path="res://Scripts/character/player.gd" id="1_fg5j3"]
+[ext_resource type="AudioStream" uid="uid://da2uc6q5pwnsq" path="res://Music/When the old Time ends.ogg" id="2_4xgi5"]
+[ext_resource type="PackedScene" uid="uid://hpj0mgsxx0p6" path="res://Scenes/Players/barbarian.tscn" id="2_eaiwr"]
+[ext_resource type="Script" path="res://Scripts/character/camera_holder.gd" id="3_g82qx"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="6_2erar"]
+[ext_resource type="Script" path="res://Scripts/UI/menu.gd" id="6_vd7rt"]
+[ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="8_h80fc"]
+[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/settings_menu.tscn" id="9_eansi"]
+[ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="10_u6s31"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cn02b"]
-albedo_texture = ExtResource("3_p4fmo")
+[sub_resource type="BoxShape3D" id="BoxShape3D_u7y4o"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_efwwu"]
-material = SubResource("StandardMaterial3D_cn02b")
-size = Vector2(5, 5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_cc2ee"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_waumi"]
-size = Vector3(5.07611, 1, 5.02545)
+[node name="Game" type="Node3D" node_paths=PackedStringArray("_settings_menu", "_fade")]
+script = ExtResource("1_4f54o")
+_background_music = ExtResource("2_4xgi5")
+_settings_menu = NodePath("UserInterface/SettingsMenu")
+_fade = NodePath("UserInterface/Fade")
 
-[node name="Game" type="Node3D"]
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.970296, 0.241922, 0, -0.241922, 0.970296, 0.3863, 1.7642, 4.48749)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 4.02268, 1.48435)
-light_energy = 2.045
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.530987, 2.09525, 3.00421)
-
-[node name="Player" type="Node" parent="." node_paths=PackedStringArray("_character", "_camera")]
+[node name="Player" type="Node" parent="." node_paths=PackedStringArray("_character", "_camera_holder", "_camera")]
+process_mode = 3
 script = ExtResource("1_fg5j3")
-_character = NodePath("../CharacterBody3D")
-_camera = NodePath("../Camera3D")
+_character = NodePath("../Barbarian")
+_camera_holder = NodePath("../Barbarian/CameraHolder")
+_camera = NodePath("../Barbarian/CameraHolder/Camera3D")
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("2_eaiwr")]
+[node name="Barbarian" parent="." instance=ExtResource("2_eaiwr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.48879, 1.22297, 11.8316)
+_walking_speed = 2.0
+_running_speed = 4.0
+_acceleration = 8.0
+_deceleration = 16.0
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="CameraHolder" type="SpringArm3D" parent="Barbarian"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("BoxShape3D_u7y4o")
+spring_length = 5.0
+script = ExtResource("3_g82qx")
 
-[node name="Meshinstance3D" type="MeshInstance3D" parent="Floor"]
-mesh = SubResource("PlaneMesh_efwwu")
-skeleton = NodePath("../..")
+[node name="Camera3D" type="Camera3D" parent="Barbarian/CameraHolder"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0362244, -0.456374, -0.0624084)
-shape = SubResource("BoxShape3D_waumi")
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.2975, 3.79688, 5.00421)
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.16437, 5.14123, 10.6374)
+omni_range = 28.2846
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(0.999931, 0, -0.0117807, 0, 1, 0, 0.0117807, 0, 0.999931, 32.8967, 13.905, -22.518)
+light_color = Color(1, 0.219608, 0.266667, 1)
+light_energy = 0.568
+light_indirect_energy = 0.577
+omni_range = 18.1831
+
+[node name="UserInterface" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" type="VBoxContainer" parent="UserInterface" node_paths=PackedStringArray("_default_focus_item")]
+process_mode = 2
+visible = false
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0475
+offset_top = -79.3025
+offset_right = 75.0475
+offset_bottom = 79.3025
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_2erar")
+theme_override_constants/separation = 15
+script = ExtResource("6_vd7rt")
+_default_focus_item = NodePath("Continue")
+
+[node name="Title" type="Label" parent="UserInterface/PauseMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Pause
+"
+horizontal_alignment = 1
+
+[node name="Continue" type="Button" parent="UserInterface/PauseMenu"]
+layout_mode = 2
+text = "Continue
+"
+
+[node name="Settings" type="Button" parent="UserInterface/PauseMenu"]
+layout_mode = 2
+text = "Settings
+"
+
+[node name="Exit" type="Button" parent="UserInterface/PauseMenu"]
+layout_mode = 2
+text = "Exit
+"
+
+[node name="SettingsMenu" parent="UserInterface" instance=ExtResource("9_eansi")]
+visible = false
+
+[node name="Fade" type="ColorRect" parent="UserInterface"]
+process_mode = 3
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("8_h80fc")
+_duration = 1.5
+
+[node name="Mage" parent="." instance=ExtResource("10_u6s31")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.581, 1.22297, 11.3956)
+_acceleration = 8.0
+_deceleration = 16.0
+
+[node name="CameraHolder" type="SpringArm3D" parent="Mage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("BoxShape3D_cc2ee")
+spring_length = 5.0
+script = ExtResource("3_g82qx")
+
+[node name="Camera3D" type="Camera3D" parent="Mage/CameraHolder"]
+
+[connection signal="pressed" from="UserInterface/PauseMenu/Continue" to="." method="toggle_pause"]
+[connection signal="pressed" from="UserInterface/PauseMenu/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="UserInterface/PauseMenu/Exit" to="." method="_on_exit_pressed"]

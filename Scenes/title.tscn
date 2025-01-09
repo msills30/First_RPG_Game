@@ -1,0 +1,120 @@
+[gd_scene load_steps=9 format=3 uid="uid://du7cyymsrakl2"]
+
+[ext_resource type="Script" path="res://Scripts/managers/title_manager.gd" id="1_ao26j"]
+[ext_resource type="Script" path="res://Scripts/UI/menu.gd" id="2_86glf"]
+[ext_resource type="AudioStream" uid="uid://d1gymbk8cipe2" path="res://Music/Echoes of the Past.ogg" id="2_j81bf"]
+[ext_resource type="Texture2D" uid="uid://lnctx28miwb2" path="res://User_Interface/dungeon_remastered_sample1 - Copy.png" id="2_u00vq"]
+[ext_resource type="FontFile" uid="uid://k7is4gti1oou" path="res://User_Interface/old_london/Olondona.otf" id="3_nx3jm"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="4_1gmyl"]
+[ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="6_11fuk"]
+[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/settings_menu.tscn" id="8_lfd0f"]
+
+[node name="Title" type="Control" node_paths=PackedStringArray("_settings_menu", "_fade")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ao26j")
+_background_music = ExtResource("2_j81bf")
+_settings_menu = NodePath("SettingsMenu")
+_fade = NodePath("Fade")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_u00vq")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.3
+anchor_right = 0.5
+anchor_bottom = 0.3
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.674815, 0.674815, 0.674815, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.154876, 0.154876, 0.154876, 1)
+theme_override_constants/outline_size = 15
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("3_nx3jm")
+theme_override_font_sizes/font_size = 64
+text = "Game Title Here
+"
+
+[node name="MenuButtons" type="VBoxContainer" parent="." node_paths=PackedStringArray("_default_focus_item")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.5
+anchor_bottom = 0.6
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.00279601
+theme = ExtResource("4_1gmyl")
+script = ExtResource("2_86glf")
+_default_focus_item = NodePath("NewGame")
+
+[node name="NewGame" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "New Game"
+
+[node name="Continue" type="Button" parent="MenuButtons"]
+layout_mode = 2
+disabled = true
+text = "Continue"
+
+[node name="Settings" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Credits" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "Credits"
+
+[node name="Exit" type="Button" parent="MenuButtons"]
+layout_mode = 2
+text = "Exit"
+
+[node name="SettingsMenu" parent="." instance=ExtResource("8_lfd0f")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 274.0
+offset_bottom = 232.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("6_11fuk")
+
+[connection signal="pressed" from="MenuButtons/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MenuButtons/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="MenuButtons/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MenuButtons/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="MenuButtons/Exit" to="." method="_on_exit_pressed"]

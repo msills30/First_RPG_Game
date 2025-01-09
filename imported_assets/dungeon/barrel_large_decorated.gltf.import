@@ -1,0 +1,45 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dh1bguldrc5mc"
+path="res://.godot/imported/barrel_large_decorated.gltf-2d196d7b5c61382e720ea96c13d0a9a5.scn"
+
+[deps]
+
+source_file="res://imported_assets/dungeon/barrel_large_decorated.gltf"
+dest_files=["res://.godot/imported/barrel_large_decorated.gltf-2d196d7b5c61382e720ea96c13d0a9a5.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"nodes": {
+"PATH:barrel_large_decorated2": {
+"generate/physics": true,
+"physics/body_type": 1,
+"physics/physics_material_override": null,
+"physics/shape_type": 5,
+"primitive/height": 2.0,
+"primitive/position": Vector3(0, 1, 0)
+}
+}
+}
+gltf/naming_version=0
+gltf/embedded_image_handling=1

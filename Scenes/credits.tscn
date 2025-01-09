@@ -1,0 +1,194 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1q05kb5e6f33"]
+
+[ext_resource type="Script" path="res://Scripts/managers/credits_manager.gd" id="1_ciktn"]
+[ext_resource type="AudioStream" uid="uid://c6m7e6o0iirpi" path="res://Music/Presents for the Kids.ogg" id="2_grye3"]
+[ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="3_0o6q1"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="3_nqyc6"]
+
+[node name="Credits" type="Control" node_paths=PackedStringArray("_fade")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -720.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ciktn")
+_background_music = ExtResource("2_grye3")
+_fade = NodePath("Fade")
+
+[node name="Scroll" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 720.0
+offset_bottom = 3848.0
+grow_horizontal = 2
+theme_override_constants/separation = 200
+
+[node name="GameDesigner" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/GameDesigner"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Game Design"
+horizontal_alignment = 1
+
+[node name="Marquis" type="Label" parent="Scroll/GameDesigner"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Marquis Sills"
+horizontal_alignment = 1
+
+[node name="GameDevelopment" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/GameDevelopment"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Game Development"
+horizontal_alignment = 1
+
+[node name="Marquis" type="Label" parent="Scroll/GameDevelopment"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Marquis Sills"
+horizontal_alignment = 1
+
+[node name="Programming" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/Programming"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Programming"
+horizontal_alignment = 1
+
+[node name="Marquis" type="Label" parent="Scroll/Programming"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Marquis Sills"
+horizontal_alignment = 1
+
+[node name="CharacterModel" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/CharacterModel"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Character Models"
+horizontal_alignment = 1
+
+[node name="Kay Jousberg" type="Label" parent="Scroll/CharacterModel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Kay Jousberg"
+horizontal_alignment = 1
+
+[node name="EnvironmentModel" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/EnvironmentModel"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Environment Models"
+horizontal_alignment = 1
+
+[node name="Kay Jousberg" type="Label" parent="Scroll/EnvironmentModel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Kay Jousberg"
+horizontal_alignment = 1
+
+[node name="Animations" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/Animations"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Animations"
+horizontal_alignment = 1
+
+[node name="Kay Jousberg" type="Label" parent="Scroll/Animations"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Kay Jousberg"
+horizontal_alignment = 1
+
+[node name="Music" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/Music"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Music"
+horizontal_alignment = 1
+
+[node name="Eric" type="Label" parent="Scroll/Music"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Eric the Funny Baron"
+horizontal_alignment = 1
+
+[node name="Interface" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Scroll/Interface"]
+layout_mode = 2
+theme = ExtResource("3_nqyc6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Interface"
+horizontal_alignment = 1
+
+[node name="Pen" type="Label" parent="Scroll/Interface"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Penzilla"
+horizontal_alignment = 1
+
+[node name="Thanks" type="Label" parent="Scroll"]
+custom_minimum_size = Vector2(0, 720)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Thank you for playing my game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("3_0o6q1")
