@@ -1,16 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://cs0hdqlfiisya"]
+[gd_scene load_steps=14 format=3 uid="uid://cs0hdqlfiisya"]
 
 [ext_resource type="MeshLibrary" uid="uid://bd47kdneop4ab" path="res://imported_assets/dungeon/dungeon_mesh_2_library.tres" id="1_j75rl"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_tr3ay"]
 [ext_resource type="PackedScene" uid="uid://c5pp3xuab5g24" path="res://Scenes/transition.tscn" id="2_7m8o6"]
 [ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="4_wotx4"]
+[ext_resource type="Script" path="res://Scripts/Events/mage_dialogue.gd" id="5_1jsby"]
+[ext_resource type="PackedScene" uid="uid://d011s5d5uajjd" path="res://Scenes/Players/knight.tscn" id="6_ld1qu"]
+[ext_resource type="PackedScene" uid="uid://b3135vqekrh81" path="res://Scenes/Players/rogue_hooded.tscn" id="7_hf6bj"]
+[ext_resource type="Script" path="res://Scripts/Events/door_dialogue.gd" id="8_fxggp"]
+[ext_resource type="PackedScene" uid="uid://dvqdiuupr5cda" path="res://Scenes/Assets/wall_half_2.tscn" id="8_vffae"]
+[ext_resource type="Script" path="res://Scripts/Events/door.gd" id="9_xw3nb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gasn"]
+radius = 1.0
+height = 2.75
+
+[sub_resource type="Curve3D" id="Curve3D_lnbmo"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, -1.27, 0, 0, -2.92, 3, 2, -5.67, 0.69, -1.835, 0.255, -0.075, 0, 1.2, 1, 10.175, -0.445, 0, 4.2, 0, 0, 0, 7.4, 1.415, 9.82),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6u2ur"]
+radius = 1.10517
+height = 3.33795
 
 [node name="Dungeon_1" type="Node3D"]
 script = ExtResource("1_tr3ay")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.0139622, 0.999903, 0, -0.999903, -0.0139622, 0.111361, 4.09101, 2.11753)
-light_energy = 0.295
+light_energy = 0.6
 light_angular_distance = 90.0
 shadow_enabled = true
 
@@ -18,7 +39,7 @@ shadow_enabled = true
 mesh_library = ExtResource("1_j75rl")
 cell_size = Vector3(1, 1, 1)
 data = {
-"cells": PackedInt32Array(4, 8, 1441878, 4, 5, 1441878, 0, 2, 1441878, 0, 8, 1441878, 65532, 8, 1441878, 4, 2, 1441878, 0, 6, 1441878, 65532, 5, 1441878, 65532, 2, 1441878, 65528, 2, 1441878, 65528, 6, 1441878, 65528, 8, 1441878, 65528, 65534, 1441878, 65532, 65534, 1441878, 65532, 65530, 1441878, 65528, 65530, 1441878, 65532, 65527, 1441878, 65528, 65527, 1441878, 65530, 65525, 655404, 65526, 65525, 1048625, 65534, 65525, 49, 65534, 65529, 1441836, 65534, 65533, 1441843, 65534, 0, 655407, 2, 0, 65, 6, 0, 49, 6, 8, 1048617, 6, 10, 1441841, 65526, 65529, 1048640, 65526, 65533, 1048641, 65526, 1, 1048641, 65526, 5, 1048641, 65526, 10, 655409, 65526, 6, 1048637, 65534, 12, 1048576, 65532, 12, 1048627, 0, 12, 1048627, 65530, 10, 71, 2, 10, 71, 8, 4, 80)
+"cells": PackedInt32Array(4, 8, 1441878, 4, 5, 1441878, 0, 2, 1441878, 0, 8, 1441878, 65532, 8, 1441878, 4, 2, 1441878, 0, 6, 1441878, 65532, 5, 1441878, 65532, 2, 1441878, 65528, 2, 1441878, 65528, 6, 1441878, 65528, 8, 1441878, 65528, 65534, 1441878, 65532, 65534, 1441878, 65532, 65530, 1441878, 65528, 65530, 1441878, 65532, 65527, 1441878, 65528, 65527, 1441878, 65534, 65529, 1441836, 65534, 65533, 1441845, 65534, 0, 655407, 6, 0, 49, 6, 8, 1048617, 6, 10, 1441841, 65526, 65533, 1048641, 65526, 1, 1048641, 65526, 5, 1048662, 65526, 10, 655409, 65526, 6, 1048662, 65534, 12, 1048576, 65532, 12, 1048627, 0, 12, 1048627, 65530, 10, 71, 2, 10, 71, 8, 4, 80, 65526, 4, 1048662, 65527, 5, 1048662, 65522, 6, 1048662, 65522, 4, 1048662, 65518, 6, 1048662, 65518, 4, 1048662, 65524, 8, 655402, 65520, 8, 655402, 65516, 8, 655407, 65516, 2, 1048623, 65516, 6, 1441834, 65526, 2, 1441842, 65523, 2, 655414, 65520, 2, 655414, 65517, 0, 1048617, 65517, 65532, 1048617, 65517, 65528, 1048617, 65517, 65526, 1048623, 65521, 65526, 51, 65524, 65526, 51, 65524, 65528, 1441878, 65520, 65528, 1441878, 65519, 65528, 1441878, 65519, 65532, 1441878, 65523, 65532, 1441878, 65524, 65532, 1441878, 65524, 65535, 1441878, 65521, 65535, 1441878, 65519, 65535, 1441878, 65524, 0, 1441878, 65521, 0, 1441878, 65519, 0, 1441878, 0, 65534, 1441878, 4, 65534, 1441878, 4, 65530, 1441878, 0, 65530, 1441878, 0, 65527, 1441878, 4, 65527, 1441878, 6, 65534, 1048619, 6, 65530, 1048619, 6, 65525, 47, 2, 65525, 45, 65535, 65525, 655417, 0, 65525, 655417, 6, 65528, 1048633, 2, 0, 43, 65534, 65525, 1048640, 65526, 65521, 1048623, 65534, 65521, 47, 65528, 65523, 1441878, 65532, 65523, 1441878, 65530, 65521, 65, 65526, 65529, 1048641, 65526, 65525, 1048641)
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
@@ -32,5 +53,83 @@ _connects_to = "dungeon_2"
 transform = Transform3D(-4.37114e-08, -1.74846e-07, -1, 0, 1, -1.74846e-07, 1, -7.64274e-15, -4.37114e-08, 8, 2.60921, 5)
 _connects_to = "dungeon_3"
 
-[node name="Mage" parent="." instance=ExtResource("4_wotx4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.06011, 0.549997, -6.55247)
+[node name="NPC" type="Node3D" parent="."]
+
+[node name="Mage" parent="NPC" instance=ExtResource("4_wotx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05586, 0.573174, -6.30589)
+
+[node name="Interaction" type="Area3D" parent="NPC/Mage"]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("5_1jsby")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC/Mage/Interaction"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("CapsuleShape3D_1gasn")
+
+[node name="MovementMarkers" type="Node3D" parent="NPC/Mage/Interaction"]
+
+[node name="Marker3D" type="Marker3D" parent="NPC/Mage/Interaction/MovementMarkers"]
+
+[node name="Marker3D2" type="Marker3D" parent="NPC/Mage/Interaction/MovementMarkers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.649)
+
+[node name="Marker3D3" type="Marker3D" parent="NPC/Mage/Interaction/MovementMarkers"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 2)
+
+[node name="CameraMarkers" type="Node3D" parent="NPC/Mage/Interaction"]
+top_level = true
+
+[node name="Marker0" type="Marker3D" parent="NPC/Mage/Interaction/CameraMarkers"]
+transform = Transform3D(0.235142, 0.340388, -0.910409, 0, 0.936672, 0.350207, 0.971961, -0.0823485, 0.220251, -3, 3, 2)
+
+[node name="Marker1" type="Marker3D" parent="NPC/Mage/Interaction/CameraMarkers"]
+transform = Transform3D(0.235142, 0.340388, -0.910409, 0, 0.936672, 0.350207, 0.971961, -0.0823485, 0.220251, -3, 3, 2)
+
+[node name="Path3D" type="Path3D" parent="NPC/Mage/Interaction"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23471, 0, 0.504822)
+curve = SubResource("Curve3D_lnbmo")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="NPC/Mage/Interaction/Path3D"]
+transform = Transform3D(0.999864, 0, 0, 0, 0.999848, 0, 0, 0, 0.999869, -2.92, 3, 2)
+rotation_mode = 0
+
+[node name="Camera3D" type="Camera3D" parent="NPC/Mage/Interaction/Path3D/PathFollow3D"]
+
+[node name="Knight" parent="NPC" instance=ExtResource("6_ld1qu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.842, 0.712978, -5.53547)
+
+[node name="Rogue_Hooded" parent="NPC" instance=ExtResource("7_hf6bj")]
+transform = Transform3D(-0.154279, 0, -0.988027, 0, 1, 0, 0.988027, 0, -0.154279, 2.55095, 0.7, -5.3435)
+
+[node name="door" parent="." instance=ExtResource("8_vffae")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.418, 0, -3.548)
+script = ExtResource("9_xw3nb")
+
+[node name="InteractionDoor" type="Area3D" parent="door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03482, 0.0752258)
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("8_fxggp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door/InteractionDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09395, 0.872575, -0.248414)
+shape = SubResource("CapsuleShape3D_6u2ur")
+
+[node name="RogueMarkers" type="Node3D" parent="door/InteractionDoor"]
+transform = Transform3D(0.988027, 0, -0.154279, 0, 1, 0, 0.154279, 0, 0.988027, 1.16124, 0, 0)
+top_level = true
+
+[node name="Marker3D" type="Marker3D" parent="door/InteractionDoor/RogueMarkers"]
+transform = Transform3D(-4.47035e-08, 0, 1, 0, 1, 0, -1, 0, -4.47035e-08, -2.67783, -0.453011, 2.24222)
+
+[node name="Marker3D2" type="Marker3D" parent="door/InteractionDoor/RogueMarkers"]
+transform = Transform3D(-0.273153, 0, 0.96197, 0, 1, 0, -0.96197, 0, -0.273153, 0.229028, -0.466674, 3.83996)
+
+[node name="Marker3D3" type="Marker3D" parent="door/InteractionDoor/RogueMarkers"]
+transform = Transform3D(-0.273153, 0, 0.96197, 0, 1, 0, -0.96197, 0, -0.273153, 6.05215, -0.481637, 2.18283)
+
+[node name="Marker3D4" type="Marker3D" parent="door/InteractionDoor/RogueMarkers"]
+transform = Transform3D(-0.96487, 0, -0.262728, 0, 1, 0, 0.262728, 0, -0.96487, 5.05864, -0.478314, -4.33897)

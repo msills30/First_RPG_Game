@@ -1,23 +1,86 @@
-[gd_scene load_steps=13 format=3 uid="uid://clrxy7rjmm77c"]
+[gd_scene load_steps=31 format=3 uid="uid://clrxy7rjmm77c"]
 
 [ext_resource type="Script" path="res://Scripts/managers/game_manager.gd" id="1_4f54o"]
 [ext_resource type="Script" path="res://Scripts/character/player.gd" id="1_fg5j3"]
-[ext_resource type="AudioStream" uid="uid://da2uc6q5pwnsq" path="res://Music/When the old Time ends.ogg" id="2_4xgi5"]
 [ext_resource type="PackedScene" uid="uid://hpj0mgsxx0p6" path="res://Scenes/Players/barbarian.tscn" id="2_eaiwr"]
 [ext_resource type="Script" path="res://Scripts/character/camera_holder.gd" id="3_g82qx"]
 [ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="6_2erar"]
+[ext_resource type="Script" path="res://Scripts/managers/event_manager.gd" id="6_m30pd"]
 [ext_resource type="Script" path="res://Scripts/UI/menu.gd" id="6_vd7rt"]
+[ext_resource type="FontFile" uid="uid://bv7iitwfsqvly" path="res://Fonts/old_london/OldLondon.ttf" id="7_06eoa"]
+[ext_resource type="Script" path="res://Scripts/Events/camera_dialog.gd" id="7_8clv0"]
+[ext_resource type="Texture2D" uid="uid://cj3rdvuoydl5d" path="res://imported_assets/BoxesBanners/Box_Orange_Rounded.png" id="7_qox73"]
 [ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="8_h80fc"]
 [ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/settings_menu.tscn" id="9_eansi"]
+[ext_resource type="FontFile" uid="uid://ckmpm08an1b28" path="res://Fonts/CAT_walthari/CAT_Walthari.ttf" id="9_uxqfn"]
+[ext_resource type="Script" path="res://Scripts/UI/dialog.gd" id="10_pm7fs"]
+[ext_resource type="Texture2D" uid="uid://c6iucxik3vvek" path="res://imported_assets/Icons/Icon_Small_Blank_Arrow.png" id="10_sqvpi"]
 [ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="10_u6s31"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u7y4o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cc2ee"]
 
-[node name="Game" type="Node3D" node_paths=PackedStringArray("_settings_menu", "_fade")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q4lpx"]
+texture = ExtResource("7_qox73")
+texture_margin_left = 256.0
+texture_margin_top = 256.0
+texture_margin_right = 256.0
+texture_margin_bottom = 256.0
+
+[sub_resource type="Theme" id="Theme_bwajn"]
+default_font = ExtResource("9_uxqfn")
+default_font_size = 32
+Label/colors/font_color = Color(0.364706, 0.113725, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.643137)
+Label/fonts/font = ExtResource("7_06eoa")
+Panel/styles/panel = SubResource("StyleBoxTexture_q4lpx")
+RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ucwgj"]
+texture = ExtResource("10_sqvpi")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i7xm5"]
+texture = ExtResource("10_sqvpi")
+modulate_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qna0g"]
+texture = ExtResource("10_sqvpi")
+modulate_color = Color(0, 1, 0.258824, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ulcw"]
+texture = ExtResource("10_sqvpi")
+modulate_color = Color(0.521141, 0.521141, 0.521141, 0.486275)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlbl6"]
+texture = ExtResource("10_sqvpi")
+modulate_color = Color(0, 1, 0.364706, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b3a8t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7aqwj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dhqnf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q0iyj"]
+
+[sub_resource type="Theme" id="Theme_yf63m"]
+default_font = ExtResource("9_uxqfn")
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_disabled_color = Color(0.501961, 0.501961, 0.501961, 0.501961)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 2
+Button/styles/disabled = SubResource("StyleBoxEmpty_b3a8t")
+Button/styles/focus = SubResource("StyleBoxEmpty_7aqwj")
+Button/styles/hover = SubResource("StyleBoxEmpty_dhqnf")
+Button/styles/normal = SubResource("StyleBoxEmpty_q0iyj")
+
+[node name="Game" type="Node3D" node_paths=PackedStringArray("_character", "_settings_menu", "_fade")]
 script = ExtResource("1_4f54o")
-_background_music = ExtResource("2_4xgi5")
+_character = NodePath("Barbarian")
 _settings_menu = NodePath("UserInterface/SettingsMenu")
 _fade = NodePath("UserInterface/Fade")
 
@@ -43,6 +106,17 @@ script = ExtResource("3_g82qx")
 
 [node name="Camera3D" type="Camera3D" parent="Barbarian/CameraHolder"]
 
+[node name="Mage" parent="." instance=ExtResource("10_u6s31")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.581, 1.22297, 11.3956)
+
+[node name="CameraHolder" type="SpringArm3D" parent="Mage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("BoxShape3D_cc2ee")
+spring_length = 5.0
+script = ExtResource("3_g82qx")
+
+[node name="Camera3D" type="Camera3D" parent="Mage/CameraHolder"]
+
 [node name="Lighting" type="Node3D" parent="."]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Lighting"]
@@ -59,7 +133,98 @@ light_energy = 0.568
 light_indirect_energy = 0.577
 omni_range = 18.1831
 
+[node name="EventManager" type="Node" parent="."]
+script = ExtResource("6_m30pd")
+
+[node name="Camera3D" type="Camera3D" parent="EventManager"]
+script = ExtResource("7_8clv0")
+
 [node name="UserInterface" type="CanvasLayer" parent="."]
+
+[node name="Dialog" type="Control" parent="UserInterface"]
+visible = false
+layout_mode = 3
+anchor_top = 0.667
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_bwajn")
+script = ExtResource("10_pm7fs")
+
+[node name="Box" type="Panel" parent="UserInterface/Dialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -35.0
+offset_right = 1276.0
+offset_bottom = 263.24
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+
+[node name="Continue" type="Button" parent="UserInterface/Dialog/Box"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -176.48
+offset_right = -14.0
+offset_bottom = -22.48
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_ucwgj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i7xm5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qna0g")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2ulcw")
+theme_override_styles/focus = SubResource("StyleBoxTexture_dlbl6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/Dialog"]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 7.0
+offset_right = 1188.0
+offset_bottom = 196.0
+
+[node name="Speaker" type="Label" parent="UserInterface/Dialog/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "A really very important person:"
+
+[node name="Dialogue" type="RichTextLabel" parent="UserInterface/Dialog/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "Greetings I have a quest for you I want to you to eat this not poisonous and apple and beat up a monster for my amusement lol."
+fit_content = true
+
+[node name="Options" type="VBoxContainer" parent="UserInterface/Dialog"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 76.76
+offset_right = 222.0
+offset_bottom = 204.76
+theme = SubResource("Theme_yf63m")
+theme_override_constants/separation = 12
+
+[node name="Option0" type="Button" parent="UserInterface/Dialog/Options"]
+layout_mode = 2
+text = "Option 0"
+alignment = 0
+
+[node name="Option1" type="Button" parent="UserInterface/Dialog/Options"]
+layout_mode = 2
+text = "Option 1"
+alignment = 0
+
+[node name="Option2" type="Button" parent="UserInterface/Dialog/Options"]
+layout_mode = 2
+text = "Option 2"
+alignment = 0
 
 [node name="PauseMenu" type="VBoxContainer" parent="UserInterface" node_paths=PackedStringArray("_default_focus_item")]
 process_mode = 2
@@ -119,19 +284,10 @@ color = Color(0, 0, 0, 1)
 script = ExtResource("8_h80fc")
 _duration = 1.5
 
-[node name="Mage" parent="." instance=ExtResource("10_u6s31")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.581, 1.22297, 11.3956)
-_acceleration = 8.0
-_deceleration = 16.0
-
-[node name="CameraHolder" type="SpringArm3D" parent="Mage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-shape = SubResource("BoxShape3D_cc2ee")
-spring_length = 5.0
-script = ExtResource("3_g82qx")
-
-[node name="Camera3D" type="Camera3D" parent="Mage/CameraHolder"]
-
+[connection signal="pressed" from="UserInterface/Dialog/Box/Continue" to="UserInterface/Dialog" method="_on_continue_pressed"]
+[connection signal="pressed" from="UserInterface/Dialog/Options/Option0" to="UserInterface/Dialog" method="_on_option_pressed" binds= [0]]
+[connection signal="pressed" from="UserInterface/Dialog/Options/Option1" to="UserInterface/Dialog" method="_on_option_pressed" binds= [1]]
+[connection signal="pressed" from="UserInterface/Dialog/Options/Option2" to="UserInterface/Dialog" method="_on_option_pressed" binds= [2]]
 [connection signal="pressed" from="UserInterface/PauseMenu/Continue" to="." method="toggle_pause"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Exit" to="." method="_on_exit_pressed"]

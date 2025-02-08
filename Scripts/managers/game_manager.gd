@@ -1,13 +1,46 @@
 extends SceneManager
 
 @onready var _player: Node = $Player
-@onready var _character: CharacterBody3D = $Barbarian
+@export var _character: CharacterBody3D
 @onready var _pause_menu : Control = $UserInterface/PauseMenu
+#@onready var _dialog: Control = $UserInterface/Dialog
+@onready var _event_manager: Node = $EventManager
+@onready var _camera: Camera3D = $Barbarian/CameraHolder/Camera3D
+
+
 var _current_level: Node3D 
 
 func _ready():
 	load_level()
 	super._ready()
+	#_dialog.display_multiline(
+		#[
+			#"Greetings I have a quest for you I want to you to eat this not poisonous and apple and beat up a monster for my amusement lol.",
+			#"But before I send to my fun and amazing quest I shall show you my amazing dance don't you'll miss it.",
+			#"......................",
+			#"Looks like you missed, its alright it takes good eyesight see my faster than light dance moves."
+		#],
+		#"A Very Important Person"
+	#)
+
+func start_event(event, disable_player : bool = true):
+	if not event || not event.has_method('run_event'):
+		push_warning('Event : ' + event + 'does not have run_event method.')
+		return
+	if disable_player:
+		_player.enabled = false
+	event.run_event(_event_manager)
+
+func end_event(use_fade : bool = false):
+	if _event_manager.camera.current:
+		if use_fade:
+			await _fade.to_black()
+		_camera.make_current()
+		_event_manager.camera.reparent(_event_manager)
+		if use_fade:
+			await _fade.to_clear()
+	_player.enabled = true
+
 
 func load_level():
 	if _current_level:

@@ -12,9 +12,17 @@ extends CharacterBody3D
 var _xz_velocity : Vector3
 var _direction : Vector3
 var _angle_difference : float 
+var _can_move : bool = true:
+	set(new_value):
+		_can_move = new_value
+		if not _can_move:
+			_direction = Vector3.ZERO
 
 @onready var _movement_speed : float = _walking_speed
 
+#We could drag and use @onready for the Raycast or
+@onready var _interact_range: RayCast3D = get_node_or_null('Rig/RayCast3D')
+#@onready var _interact_range: RayCast3D = $Rig/RayCast3D
 
 
 @export_category("Jumping")
@@ -36,10 +44,26 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var _rig: Node3D = $Rig
 @onready var _state_machine : AnimationNodeStateMachinePlayback = _animation['parameters/playback']
 
+signal animation_finished(successful : bool)
+signal destination_reached
 
 func _ready():
 	_min_jump_velocity = sqrt(_min_jump_height * _gravity * _mass * 2)
 	_max_jump_velocity = sqrt(_max_jump_height * _gravity * _mass * 2)
+
+func animate(animation_name : String, locked : bool = true) -> Signal:
+	if _state_machine.get_current_node() != "Locomotion":
+		animation_finished.emit(false)
+		return animation_finished
+	if locked:
+		_can_move = false
+	_state_machine.travel("Misc/" + animation_name)
+	while await _animation.animation_finished != animation_name:
+		continue
+	if locked:
+		_can_move = true
+	animation_finished.emit(true)
+	return animation_finished
 
 #If you want to radians to be in degrees
 #func _ready() -> void:
@@ -49,7 +73,38 @@ func face_direction(foward_direction: float):
 	_rig.rotation.y = foward_direction 
 
 func move(direction : Vector3):
+	if not _can_move:
+		return
 	_direction = direction
+
+func move_to_marker(marker : Node3D, allowable_distance : float = 0.25, running : bool = false) -> Signal:
+	var path : Vector3 = marker.global_position - global_position
+	var stopping_distance : float
+	if running:
+		run()
+	while path.length() > allowable_distance:
+		path = marker.global_position - global_position
+		stopping_distance = _xz_velocity.length() / 2 / _deceleration
+		_direction = path.normalized() if path.length() > stopping_distance else Vector3.ZERO
+		await get_tree().physics_frame
+	_direction = Vector3.ZERO
+	if running:
+		walk()
+	destination_reached.emit()
+	return destination_reached
+
+func follow_path(path, allowable_distance : float = 0.25, running : bool = false) -> Signal:
+	var next_point: int = 0
+	while next_point < path.size():
+		await move_to_marker(path[next_point], allowable_distance, running)
+		next_point += 1
+	destination_reached.emit()
+	return destination_reached
+
+func snap_to_marker(marker : Node3D, match_y_rotation : bool = true):
+	global_position = marker.global_position
+	if match_y_rotation:
+		_rig.global_rotation = marker.global_rotation
 
 func walk():
 	_movement_speed = _walking_speed
@@ -58,13 +113,17 @@ func run():
 	_movement_speed = _running_speed
 
 func start_jump():
+	if not _can_move:
+		return
 	if is_on_floor():
 		_state_machine.travel("Jump_Start")
 		_jump_hold.start()
 		_jump_hold.paused = false
 
+
 func complete_jump():
 	_jump_hold.paused = true
+
 
 func apply_jump_velocity():
 	_jump_hold.paused = true
@@ -72,6 +131,10 @@ func apply_jump_velocity():
 		velocity.y = _min_jump_velocity + (_max_jump_velocity - _min_jump_velocity) * min(1 - _jump_hold.time_left, 0.3) / 0.3
 	
 
+func interact():
+	if _interact_range &&  _interact_range.is_colliding() && _interact_range.get_collider().has_method('interact'):
+		_interact_range.get_collider().interact()
+		
 
 func _physics_process(delta: float):
 	if _direction: 
