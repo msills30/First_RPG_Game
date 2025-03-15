@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Stackable" load_steps=4 format=3 uid="uid://bob77coouv40t"]
+
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_5d3tx"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/stackable.gd" id="2_oc8nx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tkv4l"]
+atlas = ExtResource("1_5d3tx")
+region = Rect2(0, 288, 32, 32)
+
+[resource]
+script = ExtResource("2_oc8nx")
+stack_limit = 99
+name = "Health Potion"
+description = "Drink this red not gatorade for it will restore health."
+icon = SubResource("AtlasTexture_tkv4l")
+scene = "res://Scenes/Assets/health_potion.tscn"
+is_usable = true
+is_consumable = true

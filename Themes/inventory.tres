@@ -1,0 +1,56 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dkhudfcfh6qpb"]
+
+[ext_resource type="Texture2D" uid="uid://bvi5wkix11uy6" path="res://imported_assets/BoxesBanners/Box_Blank_Square.png" id="1_nysw0"]
+[ext_resource type="Texture2D" uid="uid://cu2lcjnq7784y" path="res://imported_assets/BoxesBanners/Box_Square.png" id="2_3gpg8"]
+[ext_resource type="Texture2D" uid="uid://u0bysdisqox1" path="res://imported_assets/ButtonsText/PremadeButtons_XRed.png" id="3_7ysxv"]
+[ext_resource type="FontFile" uid="uid://ckmpm08an1b28" path="res://Fonts/CAT_walthari/CAT_Walthari.ttf" id="3_pbyqq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_66kjm"]
+modulate_color = Color(1, 1, 1, 0.501961)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lrqo2"]
+texture = ExtResource("1_nysw0")
+texture_margin_left = 128.0
+texture_margin_top = 128.0
+texture_margin_right = 128.0
+texture_margin_bottom = 128.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8p027"]
+texture = ExtResource("1_nysw0")
+texture_margin_left = 128.0
+texture_margin_top = 128.0
+texture_margin_right = 128.0
+texture_margin_bottom = 128.0
+modulate_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ss0av"]
+texture = ExtResource("2_3gpg8")
+texture_margin_left = 128.0
+texture_margin_top = 128.0
+texture_margin_right = 128.0
+texture_margin_bottom = 128.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a2v48"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s82la"]
+texture = ExtResource("2_3gpg8")
+texture_margin_left = 128.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q44ns"]
+texture = ExtResource("3_7ysxv")
+
+[resource]
+default_font = ExtResource("3_pbyqq")
+default_font_size = 96
+Button/styles/disabled = SubResource("StyleBoxTexture_66kjm")
+Button/styles/focus = SubResource("StyleBoxTexture_lrqo2")
+Button/styles/hover = SubResource("StyleBoxTexture_8p027")
+Button/styles/normal = SubResource("StyleBoxTexture_ss0av")
+Button/styles/pressed = SubResource("StyleBoxTexture_a2v48")
+Panel/styles/panel = SubResource("StyleBoxTexture_s82la")
+closebutton/base_type = &"Button"
+closebutton/styles/disabled = SubResource("StyleBoxTexture_q44ns")
+closebutton/styles/focus = SubResource("StyleBoxTexture_q44ns")
+closebutton/styles/hover = SubResource("StyleBoxTexture_q44ns")
+closebutton/styles/normal = SubResource("StyleBoxTexture_q44ns")
+closebutton/styles/pressed = SubResource("StyleBoxTexture_q44ns")

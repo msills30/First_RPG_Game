@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/managers/credits_manager.gd" id="1_ciktn"]
 [ext_resource type="AudioStream" uid="uid://c6m7e6o0iirpi" path="res://Music/Presents for the Kids.ogg" id="2_grye3"]
 [ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="3_0o6q1"]
-[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="3_nqyc6"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Themes/menu_theme.tres" id="3_nqyc6"]
 
 [node name="Credits" type="Control" node_paths=PackedStringArray("_fade")]
 layout_mode = 3

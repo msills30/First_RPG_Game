@@ -1,4 +1,4 @@
-extends Area3D
+extends InteractionEvent
 
 
 #@onready var _camera_markers: Array[Node] = $CameraMarkers.get_children()
@@ -7,11 +7,11 @@ extends Area3D
 @onready var _movement_markers : Array[Node] = $MovementMarkers.get_children()
 
 
-func interact():
-	$/root/Game.start_event(self)
+#func _ready():
+	#set_interaction(not File.progress.player_has_key)
 	
 
-func  run_event(em):
+func  run_event(em : EventManager):
 	await em.fade.to_black()
 	em.barbarian.snap_to_marker(_movement_markers[2])
 	await em.fade.to_clear()
@@ -21,7 +21,8 @@ func  run_event(em):
 	await _mage.move_to_marker(_movement_markers[0])
 	_mage.animate("Interact")
 	await em.dialog.display_line("Here it is. Good luck buddy", "Mage")
-	
+	#File.progress.player_has_key = true
+	#set_interaction(false)
 	$/root/Game.end_event(true) 
 
 

@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfr4krkjg0gsc"]
+
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_tji4w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwhmj"]
+atlas = ExtResource("1_tji4w")
+region = Rect2(5, 291, 22, 26)
+
+[node name="item" type="Button"]
+custom_minimum_size = Vector2(256, 256)
+
+[node name="Icon" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -96.0
+offset_right = -55.9996
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = SubResource("AtlasTexture_pwhmj")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.797
+anchor_top = 0.912
+anchor_right = 0.797
+anchor_bottom = 0.912
+offset_left = 3.96799
+offset_top = -93.472
+offset_right = 71.968
+offset_bottom = 101.528
+grow_horizontal = 0
+text = "1
+
+"

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="ThirdPersonRPG"
+config/name="third-game-ThirdPersonRPG"
 run/main_scene="res://Scenes/title.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 File="*res://Scripts/autoloads/file.gd"
 Music="*res://Scripts/autoloads/music.gd"
+Global="*res://Scripts/autoloads/global.gd"
 
 [display]
 
@@ -107,12 +108,30 @@ interact={
 , null, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":3,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+inventory={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194308,"key_label":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":4,"pressure":0.0,"pressed":false,"script":null)
+]
+}
+use_item={
+"deadzone": 0.5,
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
+]
+}
+drop_item={
+"deadzone": 0.5,
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":3,"pressure":0.0,"pressed":false,"script":null)
+]
+}
 
 [layer_names]
 
 3d_physics/layer_1="Terrain"
 3d_physics/layer_5="Interaction"
+3d_physics/layer_6="Item"
 3d_physics/layer_9="Player"
+3d_physics/layer_10="NPC"
 
 [physics]
 

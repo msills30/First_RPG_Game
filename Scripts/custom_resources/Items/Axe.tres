@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://6ldstmc04bv5"]
+
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_1dl4s"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/item.gd" id="1_k2hyf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_li1sk"]
+atlas = ExtResource("1_1dl4s")
+region = Rect2(32, 320, 32, 32)
+
+[resource]
+script = ExtResource("1_k2hyf")
+name = "Axe"
+description = "Bring in the Choppa and nothing will stop ya"
+icon = SubResource("AtlasTexture_li1sk")
+scene = "res://Scenes/Assets/axe.tscn"
+is_usable = false
+is_consumable = false

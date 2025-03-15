@@ -69,6 +69,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("CapsuleShape3D_1gasn")
 
 [node name="MovementMarkers" type="Node3D" parent="NPC/Mage/Interaction"]
+top_level = true
 
 [node name="Marker3D" type="Marker3D" parent="NPC/Mage/Interaction/MovementMarkers"]
 

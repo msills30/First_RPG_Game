@@ -4,15 +4,22 @@ extends SceneManager
 @export var _character: CharacterBody3D
 @onready var _pause_menu : Control = $UserInterface/PauseMenu
 #@onready var _dialog: Control = $UserInterface/Dialog
-@onready var _event_manager: Node = $EventManager
+@onready var _event_manager: EventManager = $EventManager
 @onready var _camera: Camera3D = $Barbarian/CameraHolder/Camera3D
+@onready var _intro_event: ScriptedEvents = $Intro
+@onready var _inventory: Panel = %Inventory
 
 
 var _current_level: Node3D 
 
 func _ready():
 	load_level()
-	super._ready()
+	if not File.progress.intro_played:
+		start_event(_intro_event)
+		await _intro_event.finished
+	else:
+	
+		super._ready()
 	#_dialog.display_multiline(
 		#[
 			#"Greetings I have a quest for you I want to you to eat this not poisonous and apple and beat up a monster for my amusement lol.",
@@ -22,6 +29,7 @@ func _ready():
 		#],
 		#"A Very Important Person"
 	#)
+	
 
 func start_event(event, disable_player : bool = true):
 	if not event || not event.has_method('run_event'):
@@ -61,6 +69,11 @@ func toggle_pause():
 	else:
 		_pause_menu.close()
 
+func toggle_inventory():
+	if _inventory.is_open:
+		_inventory.close()
+	else:
+		_inventory.open()
 
 func _on_exit_pressed():
 	change_scene('res://Scenes/title.tscn')

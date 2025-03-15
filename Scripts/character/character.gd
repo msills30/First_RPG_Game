@@ -38,6 +38,8 @@ var _max_jump_velocity : float
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+@export_category("Equipment")
+@export var _main_hand : BoneAttachment3D
 
 @onready var _animation: AnimationTree = $AnimationTree
 #We to rotate and y with respect to the animation hence why se use the rig 
@@ -64,6 +66,14 @@ func animate(animation_name : String, locked : bool = true) -> Signal:
 		_can_move = true
 	animation_finished.emit(true)
 	return animation_finished
+
+func use_item(item : Item):
+	var instance : Node3D = load(item.scene).instantiate()
+	_main_hand.add_child(instance)
+	instance.freeze = true
+	await animate("Use_Item")
+	print(name + "used a " + item.name)
+	instance.queue_free()
 
 #If you want to radians to be in degrees
 #func _ready() -> void:

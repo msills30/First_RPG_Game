@@ -5,9 +5,9 @@
 [ext_resource type="AudioStream" uid="uid://d1gymbk8cipe2" path="res://Music/Echoes of the Past.ogg" id="2_j81bf"]
 [ext_resource type="Texture2D" uid="uid://lnctx28miwb2" path="res://User_Interface/dungeon_remastered_sample1 - Copy.png" id="2_u00vq"]
 [ext_resource type="FontFile" uid="uid://k7is4gti1oou" path="res://User_Interface/old_london/Olondona.otf" id="3_nx3jm"]
-[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="4_1gmyl"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Themes/menu_theme.tres" id="4_1gmyl"]
 [ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="6_11fuk"]
-[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/settings_menu.tscn" id="8_lfd0f"]
+[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/UI/settings_menu.tscn" id="8_lfd0f"]
 
 [node name="Title" type="Control" node_paths=PackedStringArray("_settings_menu", "_fade")]
 layout_mode = 3

@@ -4,8 +4,11 @@ extends Node
 @export var _camera_holder : SpringArm3D
 @export var _camera : Camera3D
 @onready var _game_manager : Node3D = $/root/Game
+@onready var _pick_up_radius: Area3D = $"../Barbarian/PickUpRadius"
+@onready var _inventory: Control = %Inventory
 
 
+var _nearest_item : Node3D
 var _input_direction : Vector2
 var _move_direction : Vector3
 var enabled : bool = true:
@@ -27,7 +30,11 @@ func face_direction(foward_direction: float):
 func _input(event: InputEvent):
 	if event.is_action_pressed("pause"):
 		_game_manager.toggle_pause()
-	if get_tree().paused || not enabled:
+	if get_tree().paused:
+		return
+	if event.is_action_pressed("inventory"):
+		_game_manager.toggle_inventory()
+	if not enabled:
 		return
 	elif event.is_action_pressed("run"):
 		_character.run()
@@ -38,7 +45,12 @@ func _input(event: InputEvent):
 	elif event.is_action_released("jump"):
 		_character.complete_jump()
 	elif event.is_action_pressed("interact"):
-		_character.interact()
+		_nearest_item = _pick_up_radius.get_nearest_item()
+		if _nearest_item:
+			_inventory.add_item(_nearest_item.resource)
+			_nearest_item.queue_free()
+		else:
+			_character.interact()
  
 
 func _process(_delta: float) -> void:

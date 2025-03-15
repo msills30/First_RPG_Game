@@ -1,25 +1,43 @@
-[gd_scene load_steps=31 format=3 uid="uid://clrxy7rjmm77c"]
+[gd_scene load_steps=48 format=3 uid="uid://clrxy7rjmm77c"]
 
 [ext_resource type="Script" path="res://Scripts/managers/game_manager.gd" id="1_4f54o"]
 [ext_resource type="Script" path="res://Scripts/character/player.gd" id="1_fg5j3"]
+[ext_resource type="AudioStream" uid="uid://c6m7e6o0iirpi" path="res://Music/Presents for the Kids.ogg" id="2_bkfa2"]
 [ext_resource type="PackedScene" uid="uid://hpj0mgsxx0p6" path="res://Scenes/Players/barbarian.tscn" id="2_eaiwr"]
 [ext_resource type="Script" path="res://Scripts/character/camera_holder.gd" id="3_g82qx"]
-[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Scenes/menu_theme.tres" id="6_2erar"]
+[ext_resource type="Theme" uid="uid://dgm48m0frewld" path="res://Themes/menu_theme.tres" id="6_2erar"]
+[ext_resource type="Script" path="res://Scripts/character/pickup_radius.gd" id="6_byaey"]
 [ext_resource type="Script" path="res://Scripts/managers/event_manager.gd" id="6_m30pd"]
 [ext_resource type="Script" path="res://Scripts/UI/menu.gd" id="6_vd7rt"]
 [ext_resource type="FontFile" uid="uid://bv7iitwfsqvly" path="res://Fonts/old_london/OldLondon.ttf" id="7_06eoa"]
 [ext_resource type="Script" path="res://Scripts/Events/camera_dialog.gd" id="7_8clv0"]
 [ext_resource type="Texture2D" uid="uid://cj3rdvuoydl5d" path="res://imported_assets/BoxesBanners/Box_Orange_Rounded.png" id="7_qox73"]
+[ext_resource type="Script" path="res://Scripts/UI/wallet.gd" id="8_6821l"]
 [ext_resource type="Script" path="res://Scripts/UI/fade.gd" id="8_h80fc"]
-[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/settings_menu.tscn" id="9_eansi"]
+[ext_resource type="Texture2D" uid="uid://bkmng37anihnu" path="res://imported_assets/Icons/Icon_Small_Coin.png" id="9_avjvm"]
+[ext_resource type="PackedScene" uid="uid://lo7nwknxvtkj" path="res://Scenes/UI/settings_menu.tscn" id="9_eansi"]
 [ext_resource type="FontFile" uid="uid://ckmpm08an1b28" path="res://Fonts/CAT_walthari/CAT_Walthari.ttf" id="9_uxqfn"]
 [ext_resource type="Script" path="res://Scripts/UI/dialog.gd" id="10_pm7fs"]
 [ext_resource type="Texture2D" uid="uid://c6iucxik3vvek" path="res://imported_assets/Icons/Icon_Small_Blank_Arrow.png" id="10_sqvpi"]
 [ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="10_u6s31"]
+[ext_resource type="AudioStream" uid="uid://1e5512okp5ge" path="res://SFX/collect.wav" id="12_5nn2v"]
+[ext_resource type="Texture2D" uid="uid://bpbqdmvqifepm" path="res://imported_assets/Icons/SVG/Icon_Small_Coin.svg" id="13_rbcfg"]
+[ext_resource type="Script" path="res://Scripts/Events/intro.gd" id="17_14a2v"]
+[ext_resource type="Theme" uid="uid://dkhudfcfh6qpb" path="res://Themes/inventory.tres" id="23_7ydtn"]
+[ext_resource type="FontFile" uid="uid://cy2sk3sh5danv" path="res://Fonts/old_london/OldLondonAlternate.ttf" id="24_56p3r"]
+[ext_resource type="Script" path="res://Scripts/UI/inventory.gd" id="24_bvxfr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u7y4o"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_32s0v"]
+height = 3.22
+radius = 2.5
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_cc2ee"]
+
+[sub_resource type="Curve" id="Curve_xrhif"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.493939, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q4lpx"]
 texture = ExtResource("7_qox73")
@@ -78,13 +96,25 @@ Button/styles/focus = SubResource("StyleBoxEmpty_7aqwj")
 Button/styles/hover = SubResource("StyleBoxEmpty_dhqnf")
 Button/styles/normal = SubResource("StyleBoxEmpty_q0iyj")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dbuoj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fg05c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3siwa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2l41l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_imski"]
+
 [node name="Game" type="Node3D" node_paths=PackedStringArray("_character", "_settings_menu", "_fade")]
 script = ExtResource("1_4f54o")
 _character = NodePath("Barbarian")
+_background_music = ExtResource("2_bkfa2")
 _settings_menu = NodePath("UserInterface/SettingsMenu")
 _fade = NodePath("UserInterface/Fade")
 
 [node name="Player" type="Node" parent="." node_paths=PackedStringArray("_character", "_camera_holder", "_camera")]
+unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("1_fg5j3")
 _character = NodePath("../Barbarian")
@@ -92,7 +122,9 @@ _camera_holder = NodePath("../Barbarian/CameraHolder")
 _camera = NodePath("../Barbarian/CameraHolder/Camera3D")
 
 [node name="Barbarian" parent="." instance=ExtResource("2_eaiwr")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.48879, 1.22297, 11.8316)
+collision_mask = 801
 _walking_speed = 2.0
 _running_speed = 4.0
 _acceleration = 8.0
@@ -105,6 +137,20 @@ spring_length = 5.0
 script = ExtResource("3_g82qx")
 
 [node name="Camera3D" type="Camera3D" parent="Barbarian/CameraHolder"]
+
+[node name="PickUpRadius" type="Area3D" parent="Barbarian"]
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+script = ExtResource("6_byaey")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barbarian/PickUpRadius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+shape = SubResource("CylinderShape3D_32s0v")
+
+[node name="RayCast3D" type="RayCast3D" parent="Barbarian/PickUpRadius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_mask = 33
 
 [node name="Mage" parent="." instance=ExtResource("10_u6s31")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.581, 1.22297, 11.3956)
@@ -140,6 +186,54 @@ script = ExtResource("6_m30pd")
 script = ExtResource("7_8clv0")
 
 [node name="UserInterface" type="CanvasLayer" parent="."]
+
+[node name="Wallet" type="HBoxContainer" parent="UserInterface"]
+offset_left = 32.0
+offset_top = -47.0
+offset_right = 311.0
+offset_bottom = 4.57764e-05
+script = ExtResource("8_6821l")
+on_screen_position = Vector2(32, 32)
+off_screen_position = Vector2(32, -47)
+_trans_type = 6
+
+[node name="Icon" type="TextureRect" parent="UserInterface/Wallet"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+texture = ExtResource("9_avjvm")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Counter" type="Label" parent="UserInterface/Wallet"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("9_uxqfn")
+theme_override_font_sizes/font_size = 46
+text = "99999"
+vertical_alignment = 1
+
+[node name="AutoHide" type="Timer" parent="UserInterface/Wallet"]
+wait_time = 3.0
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="UserInterface/Wallet"]
+stream = ExtResource("12_5nn2v")
+bus = &"SFX"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="UserInterface/Wallet"]
+position = Vector2(23, 23)
+emitting = false
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("13_rbcfg")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 16.0
+initial_velocity_max = 32.0
+scale_amount_min = 0.05
+scale_amount_max = 0.1
+scale_amount_curve = SubResource("Curve_xrhif")
 
 [node name="Dialog" type="Control" parent="UserInterface"]
 visible = false
@@ -284,6 +378,120 @@ color = Color(0, 0, 0, 1)
 script = ExtResource("8_h80fc")
 _duration = 1.5
 
+[node name="Inventory" type="Panel" parent="UserInterface"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1280.0
+offset_top = -720.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(1280, 720)
+size_flags_horizontal = 4
+theme = ExtResource("23_7ydtn")
+script = ExtResource("24_bvxfr")
+
+[node name="Title" type="Label" parent="UserInterface/Inventory"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.1
+offset_right = 40.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("24_56p3r")
+theme_override_font_sizes/font_size = 128
+text = "Inventory"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/Inventory/Title"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.73077
+anchor_top = 2.0
+anchor_right = 1.93665
+anchor_bottom = 9.0
+offset_left = -144.0
+offset_top = -54.0
+offset_right = 517.001
+offset_bottom = 301.0
+theme_override_constants/separation = 64
+
+[node name="ItemName" type="Label" parent="UserInterface/Inventory/Title/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+text = "
+"
+autowrap_mode = 2
+
+[node name="ItemDescription" type="Label" parent="UserInterface/Inventory/Title/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_vertical = 3
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UserInterface/Inventory/Title/VBoxContainer"]
+layout_mode = 2
+
+[node name="Auxillary" type="Button" parent="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dbuoj")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fg05c")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3siwa")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2l41l")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_imski")
+text = "X Use"
+
+[node name="Drop" type="Button" parent="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dbuoj")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fg05c")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3siwa")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2l41l")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_imski")
+text = "Y Drop"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UserInterface/Inventory"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.15
+anchor_right = 0.647
+anchor_bottom = 0.873
+offset_top = -1.52588e-05
+offset_right = -0.320068
+offset_bottom = 38.88
+
+[node name="ItemContainer" type="GridContainer" parent="UserInterface/Inventory/ScrollContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="ExitButton" type="Button" parent="UserInterface/Inventory"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 128.0
+grow_horizontal = 0
+theme_type_variation = &"closebutton"
+
+[node name="Intro" type="Node" parent="."]
+script = ExtResource("17_14a2v")
+
+[connection signal="body_entered" from="Barbarian/PickUpRadius" to="Barbarian/PickUpRadius" method="_on_body_entered"]
+[connection signal="body_exited" from="Barbarian/PickUpRadius" to="Barbarian/PickUpRadius" method="_on_body_exited"]
+[connection signal="timeout" from="UserInterface/Wallet/AutoHide" to="UserInterface/Wallet" method="close"]
 [connection signal="pressed" from="UserInterface/Dialog/Box/Continue" to="UserInterface/Dialog" method="_on_continue_pressed"]
 [connection signal="pressed" from="UserInterface/Dialog/Options/Option0" to="UserInterface/Dialog" method="_on_option_pressed" binds= [0]]
 [connection signal="pressed" from="UserInterface/Dialog/Options/Option1" to="UserInterface/Dialog" method="_on_option_pressed" binds= [1]]
@@ -291,3 +499,8 @@ _duration = 1.5
 [connection signal="pressed" from="UserInterface/PauseMenu/Continue" to="." method="toggle_pause"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Exit" to="." method="_on_exit_pressed"]
+[connection signal="focus_entered" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
+[connection signal="pressed" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_auxillary_pressed"]
+[connection signal="focus_entered" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
+[connection signal="pressed" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_drop_pressed"]
+[connection signal="pressed" from="UserInterface/Inventory/ExitButton" to="UserInterface/Inventory" method="close"]
