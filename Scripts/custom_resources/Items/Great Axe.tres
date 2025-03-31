@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Equipment" load_steps=4 format=3 uid="uid://448dsobjs5xc"]
+
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_xsifn"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/equipment.gd" id="2_jsa2u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_578am"]
+atlas = ExtResource("1_xsifn")
+region = Rect2(352, 160, 32, 32)
+
+[resource]
+script = ExtResource("2_jsa2u")
+type = 0
+name = "Great Axe"
+description = "Bring in the Choppa the GREAT ONE"
+icon = SubResource("AtlasTexture_578am")
+scene = "res://Scenes/Assets/great_axe.tscn"
+is_usable = false
+is_consumable = false

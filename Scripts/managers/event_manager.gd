@@ -6,6 +6,8 @@ class_name EventManager
 @onready var fade: ColorRect = $"../UserInterface/Fade"
 @onready var camera: Camera3D = $Camera3D
 @onready var _player_camera: Camera3D = $"../Barbarian/CameraHolder/Camera3D"
+@onready var inventory: Menu = %Inventory
+
 
 func position_cinematic_camera_to_match_player_camera():
 	camera.move_to_marker(_player_camera)

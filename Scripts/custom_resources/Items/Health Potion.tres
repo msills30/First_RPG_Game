@@ -13,6 +13,7 @@ stack_limit = 99
 name = "Health Potion"
 description = "Drink this red not gatorade for it will restore health."
 icon = SubResource("AtlasTexture_tkv4l")
+value = 2
 scene = "res://Scenes/Assets/health_potion.tscn"
 is_usable = true
 is_consumable = true

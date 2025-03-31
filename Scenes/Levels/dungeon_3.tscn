@@ -1,15 +1,22 @@
-[gd_scene load_steps=11 format=3 uid="uid://dd2fv03kkestq"]
+[gd_scene load_steps=16 format=3 uid="uid://dd2fv03kkestq"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_c8dva"]
 [ext_resource type="MeshLibrary" uid="uid://bd47kdneop4ab" path="res://imported_assets/dungeon/dungeon_mesh_2_library.tres" id="1_glgbj"]
 [ext_resource type="PackedScene" uid="uid://c5pp3xuab5g24" path="res://Scenes/transition.tscn" id="2_24ql7"]
 [ext_resource type="PackedScene" uid="uid://d011s5d5uajjd" path="res://Scenes/Players/knight.tscn" id="4_4eni2"]
 [ext_resource type="PackedScene" uid="uid://4vw65uqqfd5h" path="res://Scenes/Assets/large_coin_stack.tscn" id="5_jk1u4"]
+[ext_resource type="Script" path="res://Scripts/Events/shop.gd" id="5_mallh"]
 [ext_resource type="PackedScene" uid="uid://yjew8ovs8d31" path="res://Scenes/Assets/medium_coin_stack.tscn" id="6_7jlf0"]
+[ext_resource type="Resource" uid="uid://6ldstmc04bv5" path="res://Scripts/custom_resources/Items/Axe.tres" id="6_adul8"]
+[ext_resource type="Resource" uid="uid://bob77coouv40t" path="res://Scripts/custom_resources/Items/Health Potion.tres" id="7_iv77i"]
 [ext_resource type="PackedScene" uid="uid://b0jwknqshfiw2" path="res://Scenes/Assets/small_coin_stack.tscn" id="7_q8ehh"]
 [ext_resource type="PackedScene" uid="uid://cfaxn24gxb4d5" path="res://Scenes/Assets/health_potion.tscn" id="8_d683x"]
+[ext_resource type="Resource" uid="uid://bpr4osmmr6lr6" path="res://Scripts/custom_resources/Items/Red Cape.tres" id="8_edstl"]
 [ext_resource type="PackedScene" uid="uid://dwu8ylspsocun" path="res://Scenes/Assets/table.tscn" id="9_v84g6"]
 [ext_resource type="PackedScene" uid="uid://tb0wksv1k5rr" path="res://Scenes/Assets/axe.tscn" id="10_s4njg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sp5rm"]
+size = Vector3(5.51, 2.95, 7.44)
 
 [node name="Dungeon_3" type="Node3D"]
 script = ExtResource("1_c8dva")
@@ -46,6 +53,19 @@ omni_range = 32.248
 [node name="Knight" parent="." instance=ExtResource("4_4eni2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.14247, 5.05, -9.29908)
 
+[node name="Shop" type="Area3D" parent="Knight"]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("5_mallh")
+_intro = "Thanks for coming please check out my wares"
+_outro = "Thank you come again"
+stock = Array[Resource("res://Scripts/custom_resources/Items/item.gd")]([ExtResource("6_adul8"), ExtResource("7_iv77i"), ExtResource("8_edstl")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Knight/Shop"]
+transform = Transform3D(0.999861, 0, 0.016702, 0, 1, 0, -0.016702, 0, 0.999861, 0, 1.19, 0)
+shape = SubResource("BoxShape3D_sp5rm")
+
 [node name="LargeCoinStack" parent="." instance=ExtResource("5_jk1u4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.77469, 1.10611, 5.57087)
 
@@ -57,17 +77,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.18639, 1.05, 9.48352)
 
 [node name="HealthPotion" parent="." instance=ExtResource("8_d683x")]
 transform = Transform3D(-0.996926, 0, -0.0783547, 0, 1, 0, 0.0783547, 0, -0.996926, 10.997, 2.76747, 2.35756)
-collision_layer = 32
 collision_mask = 769
 
 [node name="HealthPotion2" parent="." instance=ExtResource("8_d683x")]
 transform = Transform3D(0.899802, -0.436299, 1.90712e-08, 0, -4.37114e-08, -1, 0.436299, 0.899802, -3.93316e-08, 11.925, 1.27735, 3)
-collision_layer = 32
 collision_mask = 769
 
 [node name="HealthPotion3" parent="." instance=ExtResource("8_d683x")]
 transform = Transform3D(-0.858682, -0.512405, 0.0103722, -0.0774708, 0.149777, 0.98568, -0.506621, 0.845581, -0.168307, 9.50679, 1.26714, 3.58648)
-collision_layer = 32
 collision_mask = 769
 
 [node name="Table" parent="." instance=ExtResource("9_v84g6")]

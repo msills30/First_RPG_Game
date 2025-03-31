@@ -39,6 +39,7 @@ offset_top = -93.472
 offset_right = 71.968
 offset_bottom = 101.528
 grow_horizontal = 0
-text = "1
+text = "E
 
 "
+horizontal_alignment = 1

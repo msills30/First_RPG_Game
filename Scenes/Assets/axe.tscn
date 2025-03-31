@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/item.gd" id="1_jgl46"]
 [ext_resource type="Texture2D" uid="uid://btijl2xofqh1o" path="res://imported_assets/character/imported_characters/Barbarian_barbarian_texture.png" id="1_ykofd"]
-[ext_resource type="Resource" uid="uid://6ldstmc04bv5" path="res://Scripts/custom_resources/Items/Axe.tres" id="2_4ucnw"]
+[ext_resource type="Resource" uid="uid://6ldstmc04bv5" path="res://Scripts/custom_resources/Items/Axe.tres" id="2_bfa28"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wlm72"]
 size = Vector3(0.75, 1.25, 0.2)
@@ -51,7 +51,7 @@ shadow_mesh = SubResource("ArrayMesh_cew3x")
 collision_layer = 32
 collision_mask = 801
 script = ExtResource("1_jgl46")
-resource = ExtResource("2_4ucnw")
+resource = ExtResource("2_bfa28")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23, 0.35, 0)

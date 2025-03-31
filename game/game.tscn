@@ -188,6 +188,7 @@ script = ExtResource("7_8clv0")
 [node name="UserInterface" type="CanvasLayer" parent="."]
 
 [node name="Wallet" type="HBoxContainer" parent="UserInterface"]
+unique_name_in_owner = true
 offset_left = 32.0
 offset_top = -47.0
 offset_right = 311.0
@@ -380,14 +381,15 @@ _duration = 1.5
 
 [node name="Inventory" type="Panel" parent="UserInterface"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1280.0
+offset_left = -1286.0
 offset_top = -720.0
-offset_right = 1280.0
+offset_right = 1274.0
 offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -412,7 +414,8 @@ theme_override_fonts/font = ExtResource("24_56p3r")
 theme_override_font_sizes/font_size = 128
 text = "Inventory"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/Inventory/Title"]
+[node name="Info" type="VBoxContainer" parent="UserInterface/Inventory/Title"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.73077
@@ -425,23 +428,23 @@ offset_right = 517.001
 offset_bottom = 301.0
 theme_override_constants/separation = 64
 
-[node name="ItemName" type="Label" parent="UserInterface/Inventory/Title/VBoxContainer"]
+[node name="ItemName" type="Label" parent="UserInterface/Inventory/Title/Info"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 text = "
 "
 autowrap_mode = 2
 
-[node name="ItemDescription" type="Label" parent="UserInterface/Inventory/Title/VBoxContainer"]
+[node name="ItemDescription" type="Label" parent="UserInterface/Inventory/Title/Info"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_vertical = 3
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UserInterface/Inventory/Title/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UserInterface/Inventory/Title/Info"]
 layout_mode = 2
 
-[node name="Auxillary" type="Button" parent="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer"]
+[node name="Auxillary" type="Button" parent="UserInterface/Inventory/Title/Info/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_dbuoj")
@@ -451,7 +454,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_2l41l")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_imski")
 text = "X Use"
 
-[node name="Drop" type="Button" parent="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer"]
+[node name="Drop" type="Button" parent="UserInterface/Inventory/Title/Info/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_dbuoj")
@@ -461,6 +464,56 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_2l41l")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_imski")
 text = "Y Drop"
 
+[node name="Shop" type="VBoxContainer" parent="UserInterface/Inventory/Title"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.73077
+anchor_top = 2.0
+anchor_right = 3.088
+anchor_bottom = 11.922
+offset_left = -112.0
+offset_top = -54.0
+offset_right = 84.1039
+offset_bottom = 0.0339355
+theme_override_constants/separation = 64
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UserInterface/Inventory/Title/Shop"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ShopGridContainer" type="GridContainer" parent="UserInterface/Inventory/Title/Shop/ScrollContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UserInterface/Inventory/Title/Shop"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Coin" type="TextureRect" parent="UserInterface/Inventory/Title/Shop/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("13_rbcfg")
+
+[node name="Price" type="Label" parent="UserInterface/Inventory/Title/Shop/HBoxContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "0
+"
+
+[node name="Transaction" type="Button" parent="UserInterface/Inventory/Title/Shop/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dbuoj")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fg05c")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3siwa")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2l41l")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_imski")
+text = "X Buy"
+
+[node name="Line2D" type="Line2D" parent="UserInterface/Inventory/Title/Shop"]
+position = Vector2(-24.0005, 8)
+points = PackedVector2Array(-8.00049, -4, -8.00049, 1124)
+width = 14.825
+
 [node name="ScrollContainer" type="ScrollContainer" parent="UserInterface/Inventory"]
 layout_mode = 1
 anchors_preset = -1
@@ -469,12 +522,12 @@ anchor_top = 0.15
 anchor_right = 0.647
 anchor_bottom = 0.873
 offset_top = -1.52588e-05
-offset_right = -0.320068
+offset_right = -20.3201
 offset_bottom = 38.88
 
 [node name="ItemContainer" type="GridContainer" parent="UserInterface/Inventory/ScrollContainer"]
 layout_mode = 2
-columns = 6
+columns = 5
 
 [node name="ExitButton" type="Button" parent="UserInterface/Inventory"]
 layout_mode = 1
@@ -499,8 +552,10 @@ script = ExtResource("17_14a2v")
 [connection signal="pressed" from="UserInterface/PauseMenu/Continue" to="." method="toggle_pause"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="UserInterface/PauseMenu/Exit" to="." method="_on_exit_pressed"]
-[connection signal="focus_entered" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
-[connection signal="pressed" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_auxillary_pressed"]
-[connection signal="focus_entered" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
-[connection signal="pressed" from="UserInterface/Inventory/Title/VBoxContainer/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_drop_pressed"]
+[connection signal="focus_entered" from="UserInterface/Inventory/Title/Info/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
+[connection signal="pressed" from="UserInterface/Inventory/Title/Info/HBoxContainer/Auxillary" to="UserInterface/Inventory" method="_on_auxillary_pressed"]
+[connection signal="focus_entered" from="UserInterface/Inventory/Title/Info/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
+[connection signal="pressed" from="UserInterface/Inventory/Title/Info/HBoxContainer/Drop" to="UserInterface/Inventory" method="_on_drop_pressed"]
+[connection signal="focus_entered" from="UserInterface/Inventory/Title/Shop/HBoxContainer/Transaction" to="UserInterface/Inventory" method="_on_action_button_focus_entered"]
+[connection signal="pressed" from="UserInterface/Inventory/Title/Shop/HBoxContainer/Transaction" to="UserInterface/Inventory" method="_on_transaction_pressed"]
 [connection signal="pressed" from="UserInterface/Inventory/ExitButton" to="UserInterface/Inventory" method="close"]

@@ -7,3 +7,11 @@ enum NPC
 	ROUGE
 }
 
+enum EquipmentType
+{
+	MAIN_HAND,
+	OFF_HAND,
+	BACK,
+	HEAD
+	
+}

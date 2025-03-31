@@ -73,7 +73,7 @@ func toggle_inventory():
 	if _inventory.is_open:
 		_inventory.close()
 	else:
-		_inventory.open()
+		_inventory.open_as_inventory()
 
 func _on_exit_pressed():
 	change_scene('res://Scenes/title.tscn')

@@ -38,8 +38,10 @@ var _max_jump_velocity : float
 
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@export_category("Equipment")
-@export var _main_hand : BoneAttachment3D
+
+
+@export_category("Equipent")
+@export var _sockets : Array[BoneAttachment3D]
 
 @onready var _animation: AnimationTree = $AnimationTree
 #We to rotate and y with respect to the animation hence why se use the rig 
@@ -67,13 +69,36 @@ func animate(animation_name : String, locked : bool = true) -> Signal:
 	animation_finished.emit(true)
 	return animation_finished
 
+func _stop(instance : Node3D):
+	instance.set_physics_process(false)  # Disable physics processing
+	if instance.has_method("set_collision_layer"):
+		instance.set_collision_layer(0)  # Disable collisions
+	if instance.has_method("set_collision_mask"):
+		instance.set_collision_mask(0)
+
 func use_item(item : Item):
+	var was_holding : Node3D
+	if _sockets[0].get_child_count() > 0:
+		was_holding = _sockets[0].get_child(0)
+		was_holding.visible = false
 	var instance : Node3D = load(item.scene).instantiate()
-	_main_hand.add_child(instance)
-	instance.freeze = true
+	_sockets[0].add_child(instance)
+	_stop(instance)
 	await animate("Use_Item")
-	print(name + "used a " + item.name)
+	print(name + " used a " + item.name)
 	instance.queue_free()
+	
+	if was_holding:
+		was_holding.visible = true 
+
+func don(item : Equipment):
+	var instance : Node3D = load(item.scene).instantiate()
+	_sockets[item.type].add_child(instance)
+	_stop(instance)
+
+func doff(socket : int):
+	if _sockets[socket].get_child_count() > 0:
+		_sockets[socket].get_child(0).queue_free()
 
 #If you want to radians to be in degrees
 #func _ready() -> void:

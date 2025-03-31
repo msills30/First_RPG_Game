@@ -15,17 +15,26 @@ class_name Progress
 			Global.coins_updated.emit(coins) 
 
 @export var inventory : Array = []
+@export var equipment : Array = [1, 2, 3, 4]
 
 
 func _init():
 	current_level = 'dungeon_1'
 	transition_id = 0
 	times_spoken_to_npc = [0, 0, 0]
-	coins = 0
+	coins = 10
 	inventory = [
 		{"name" : "Health Potion", "quantity" : 98},
 		{"name" : "Axe"},
-		{"name" : "Axe"}
+		{"name" : "Off Hand Axe"},
+		{"name" : "Great Axe"},
+		{"name": "Barbarian Round Shield"},
+		{"name": "Barbarian Hat"},
+		{"name": "Knight Helmet"},
+		{"name": "Red Cape"},
+		{"name": "Brown Cape"},
+		{"name": "Crossbow"}
+		
 	]
 
 
