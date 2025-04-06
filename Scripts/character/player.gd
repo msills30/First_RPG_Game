@@ -6,8 +6,10 @@ extends Node
 @onready var _game_manager : Node3D = $/root/Game
 @onready var _pick_up_radius: Area3D = $"../Barbarian/PickUpRadius"
 @onready var _inventory: Control = %Inventory
+@onready var _target_indicator: Sprite3D = $TargetIndicator
 
 
+var _target : Node3D
 var _nearest_item : Node3D
 var _input_direction : Vector2
 var _move_direction : Vector3
@@ -26,6 +28,32 @@ var enabled : bool = true:
 func face_direction(foward_direction: float):
 	_camera_holder.rotation.y = foward_direction + PI
 	_character.face_direction(foward_direction)
+
+#This input controls the camera 
+func _camera_input(event : InputEvent):
+	if event is InputEventMouseMotion:
+		_camera_holder.look(event.relative * get_process_delta_time())
+	if event.is_action_pressed('toggle_lock'):
+		if _target:
+			#if pressing down, force lock off
+			if _input_direction.dot(Vector2.DOWN) > 0.75:
+				toggle_lock(true)
+			else:
+				toggle_lock()
+		else:
+			toggle_lock()
+			if not _target:
+				_camera_holder.position_camera_behind_character()
+
+func toggle_lock(force_off : bool = false):
+	_target = null if force_off else _camera.get_nearest_visible_target(_target)
+	if _target:
+		_target_indicator.reparent(_target)
+		_target_indicator.position = Vector3.UP * 3
+		_target_indicator.visible = true
+	else :
+			_target_indicator.reparent(self)
+			_target_indicator.visible = false
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("pause"):
