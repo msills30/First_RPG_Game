@@ -1,13 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://vsiujmchgs1f"]
+[gd_scene load_steps=8 format=3 uid="uid://c4pakh7rd8qyd"]
 
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_g232q"]
-[ext_resource type="Texture2D" uid="uid://djn0gmh0ahmdc" path="res://imported_assets/character/imported_characters/Rogue_rogue_texture.png" id="1_vdnh1"]
-[ext_resource type="Resource" uid="uid://dyk3qajxxbhek" path="res://Scripts/custom_resources/Items/Crossbow.tres" id="2_mtnbk"]
+[ext_resource type="Script" path="res://Scripts/item.gd" id="1_2qwhb"]
+[ext_resource type="Resource" uid="uid://dyk3qajxxbhek" path="res://Scripts/custom_resources/Items/Crossbow.tres" id="2_u4jrf"]
+[ext_resource type="Texture2D" uid="uid://djn0gmh0ahmdc" path="res://imported_assets/character/imported_characters/Rogue_rogue_texture.png" id="3_0rloi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgu1o"]
 resource_name = "rogue_texture"
 cull_mode = 2
-albedo_texture = ExtResource("1_vdnh1")
+albedo_texture = ExtResource("3_0rloi")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_klmdy"]
@@ -50,8 +50,8 @@ size = Vector3(1, 0.401489, 1.47363)
 [node name="Crossbow" type="RigidBody3D"]
 collision_layer = 32
 collision_mask = 801
-script = ExtResource("1_g232q")
-resource = ExtResource("2_mtnbk")
+script = ExtResource("1_2qwhb")
+resource = ExtResource("2_u4jrf")
 
 [node name="meshinstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, -3.94737e-14, 5.68434e-14, 1, 1.42109e-14, 2.18933e-14, -3.55271e-15, 1, 0, 0, 0)

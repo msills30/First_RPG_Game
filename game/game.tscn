@@ -133,6 +133,9 @@ billboard = 1
 no_depth_test = true
 texture = ExtResource("4_4vxkp")
 
+[node name="InputBuffer" type="Timer" parent="Player"]
+one_shot = true
+
 [node name="Barbarian" parent="." instance=ExtResource("2_eaiwr")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.48879, 1.22297, 11.8316)
@@ -567,6 +570,10 @@ theme_type_variation = &"closebutton"
 [node name="Intro" type="Node" parent="."]
 script = ExtResource("17_14a2v")
 
+[connection signal="targeted" from="Player" to="Barbarian" method="_on_player_targeted"]
+[connection signal="targeted" from="Player" to="Barbarian/CameraHolder" method="_on_player_targeted"]
+[connection signal="targeted" from="Player" to="Barbarian/CameraHolder/Camera3D" method="_on_player_targeted"]
+[connection signal="target_exit_range" from="Barbarian/CameraHolder/Camera3D" to="Player" method="toggle_lock"]
 [connection signal="body_entered" from="Barbarian/CameraHolder/Camera3D/TargetRange" to="Barbarian/CameraHolder/Camera3D" method="_on_target_range_body_entered"]
 [connection signal="body_exited" from="Barbarian/CameraHolder/Camera3D/TargetRange" to="Barbarian/CameraHolder/Camera3D" method="_on_target_range_body_exited"]
 [connection signal="body_entered" from="Barbarian/PickUpRadius" to="Barbarian/PickUpRadius" method="_on_body_entered"]

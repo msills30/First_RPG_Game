@@ -1,8 +1,8 @@
 extends InteractionEvent
 
 
-#@onready var _camera_markers: Array[Node] = $CameraMarkers.get_children()
-#@onready var _path_follow: PathFollow3D = $Path3D/PathFollow3D
+@onready var _camera_markers: Array[Node] = $CameraMarkers.get_children()
+@onready var _path_follow: PathFollow3D = $Path3D/PathFollow3D
 @onready var _mage: CharacterBody3D = get_parent()
 @onready var _movement_markers : Array[Node] = $MovementMarkers.get_children()
 
@@ -26,7 +26,7 @@ func  run_event(em : EventManager):
 	$/root/Game.end_event(true) 
 
 
-#func run_event(em):
+#func run_event(em: EventManager):
 	##await em.fade_to_marker(_camera_markers[0])
 	#await em.position_cinematic_camera_to_match_player_camera()
 	#em.camera.pan_to_marker(_camera_markers[0], 5)

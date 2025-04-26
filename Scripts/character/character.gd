@@ -9,14 +9,25 @@ extends CharacterBody3D
 @export var _deceleration : float = 4
 #rotation is measured in radians
 @export var _rotation_speed : float = PI * 2
+
 var _xz_velocity : Vector3
+var _relative_velocity : Vector3
 var _direction : Vector3
+var _wants_to_face_direction : Vector3
 var _angle_difference : float 
 var _can_move : bool = true:
 	set(new_value):
 		_can_move = new_value
 		if not _can_move:
 			_direction = Vector3.ZERO
+
+#Combat Variables
+var _target : Node3D
+var _locked_on_blend : Vector2
+
+#Buffered Inputs
+var _wants_to_attack : bool
+var _wants_to_jump : bool
 
 @onready var _movement_speed : float = _walking_speed
 
@@ -40,30 +51,34 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 
-@export_category("Equipent")
+@export_category("Equipment")
 @export var _sockets : Array[BoneAttachment3D]
 
-@onready var _animation: AnimationTree = $AnimationTree
+
 #We to rotate and y with respect to the animation hence why se use the rig 
 @onready var _rig: Node3D = $Rig
-@onready var _state_machine : AnimationNodeStateMachinePlayback = _animation['parameters/playback']
+@onready var _animation: AnimationScript = $AnimationTree as AnimationScript
 
 signal animation_finished(successful : bool)
+
 signal destination_reached
 
 func _ready():
 	_min_jump_velocity = sqrt(_min_jump_height * _gravity * _mass * 2)
 	_max_jump_velocity = sqrt(_max_jump_height * _gravity * _mass * 2)
 
+
 func animate(animation_name : String, locked : bool = true) -> Signal:
-	if _state_machine.get_current_node() != "Locomotion":
-		animation_finished.emit(false)
-		return animation_finished
+	if _animation:
+		if _animation.character_is_in_dialog().get_current_node() != "Locomotion":
+			animation_finished.emit(false)
+			return animation_finished
 	if locked:
 		_can_move = false
-	_state_machine.travel("Misc/" + animation_name)
-	while await _animation.animation_finished != animation_name:
-		continue
+	if _animation:
+		_animation.character_is_in_dialog().travel("Misc/" + animation_name)
+		while await _animation.animation_finished != animation_name:
+			continue
 	if locked:
 		_can_move = true
 	animation_finished.emit(true)
@@ -107,6 +122,11 @@ func doff(socket : int):
 func face_direction(foward_direction: float):
 	_rig.rotation.y = foward_direction 
 
+# Which direction is the character rig facing in global space?
+func get_rig_rotation() -> Vector3:
+	return _rig.global_rotation
+
+
 func move(direction : Vector3):
 	if not _can_move:
 		return
@@ -141,20 +161,27 @@ func snap_to_marker(marker : Node3D, match_y_rotation : bool = true):
 	if match_y_rotation:
 		_rig.global_rotation = marker.global_rotation
 
+
 func walk():
 	_movement_speed = _walking_speed
 
 func run():
 	_movement_speed = _running_speed
 
-func start_jump():
-	if not _can_move:
-		return
-	if is_on_floor():
-		_state_machine.travel("Jump_Start")
-		_jump_hold.start()
-		_jump_hold.paused = false
+#func start_jump():
+	#if not _can_move:
+		#return
+	#if is_on_floor():
+		#_state_machine.travel("Jump_Start")
+		#_jump_hold.start()
+		#_jump_hold.paused = false
 
+func restrict_movement(cannot_move: bool):
+	_can_move = not cannot_move
+
+func start_jump():
+	_wants_to_jump = true
+	_wants_to_attack = false
 
 func complete_jump():
 	_jump_hold.paused = true
@@ -164,17 +191,38 @@ func apply_jump_velocity():
 	_jump_hold.paused = true
 	if is_on_floor():
 		velocity.y = _min_jump_velocity + (_max_jump_velocity - _min_jump_velocity) * min(1 - _jump_hold.time_left, 0.3) / 0.3
-	
+
+func cancel_jump():
+	_wants_to_jump = false
 
 func interact():
 	if _interact_range &&  _interact_range.is_colliding() && _interact_range.get_collider().has_method('interact'):
 		_interact_range.get_collider().interact()
 		
 
+#region Combat
+
+func _on_player_targeted(new_target: Node3D):
+	_target = new_target
+
+func attack():
+	_wants_to_attack = true
+	_wants_to_jump = false
+
+func cancel_attack():
+	_wants_to_attack = false
+
+#endregion
+
+
 func _physics_process(delta: float):
 	if _direction: 
-		_angle_difference = wrapf(atan2(_direction.x, _direction.z) - _rig.rotation.y, -PI,PI)
-		_rig.rotation.y += clamp(_rotation_speed * delta, 0, abs(_angle_difference)) * sign(_angle_difference)
+		#Face direction of input or the target
+		if _target:
+			_wants_to_face_direction = _target.global_position - global_position
+		else:
+			_wants_to_face_direction = _direction
+		_rotate_towards_direction(_wants_to_face_direction, delta)
 		# Copy the character's x and z velocity to isolate from y.
 	_xz_velocity = Vector3(velocity.x, 0, velocity.z)
 	
@@ -187,8 +235,17 @@ func _physics_process(delta: float):
 	velocity.x = _xz_velocity.x
 	velocity.z = _xz_velocity.z
 	
+	
+	
+	if _animation:
+		_animation.character_is_moving(velocity != Vector3.ZERO)
+	
 	move_and_slide()
 	
+
+func _rotate_towards_direction(direction : Vector3, delta : float):
+	_angle_difference = wrapf(atan2(direction.x, direction.z) - _rig.rotation.y, -PI,PI)
+	_rig.rotation.y += clamp(_rotation_speed * delta, 0, abs(_angle_difference)) * sign(_angle_difference)
 
 func _ground_physics(delta: float):
 		#Apply movement to the xz input  
@@ -203,8 +260,18 @@ func _ground_physics(delta: float):
 	#Decelerate
 	else:
 		_xz_velocity = _xz_velocity.move_toward(Vector3.ZERO, _deceleration * delta)
+	#Tell animation tree when to blend animations
+	_relative_velocity = _xz_velocity / _running_speed
+	if _animation:
+		if _target:
+			_locked_on_blend.x = _rig.global_basis.x.dot(_relative_velocity) * -1
+			_locked_on_blend.y = _rig.global_basis.z.dot(_relative_velocity) 
+			_animation.set_locked_on_blend(_locked_on_blend)
+			#_animation.set('parameters/Movement/Locomotion/Locked_On/blend_position',_locked_on_blend)
+		else:
+			_animation.set_not_locked_on_blend(_relative_velocity.length())
+		#_animation.set('parameters/Movement/Locomotion/Not_Locked_On/blend_position',_relative_velocity.length())
 	
-	_animation.set('parameters/Locomotion/blend_position',_xz_velocity.length()/ _running_speed)
 
 
 func _air_physics(delta: float):
@@ -221,9 +288,6 @@ func _air_physics(delta: float):
 	#Decelerate
 	else:
 		_xz_velocity = _xz_velocity.move_toward(Vector3.ZERO, _deceleration * _air_brakes * delta)
-
-
-
 
 
 

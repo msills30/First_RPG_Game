@@ -11,6 +11,8 @@ const PREFAB : PackedScene = preload("res://Scenes/UI/item.tscn")
 @onready var _auxillary: Button = $Title/Info/HBoxContainer/Auxillary
 @onready var _drop: Button = $Title/Info/HBoxContainer/Drop
 
+
+
 #region Shop
 @onready var _title: Label = $Title
 @onready var _info_view: Control = $Title/Info

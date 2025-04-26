@@ -1,0 +1,105 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=21 format=3 uid="uid://co8el38f2whox"]
+
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cxmga1la225tp" path="res://Scenes/Players/character_animations.tres" id="1_m5ygp"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_enfu5"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_elm5x"]
+animation = &"Unarmed_Melee_Attack_Kick"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wpvq8"]
+animation = &"Unarmed_Melee_Attack_Punch_A"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_227s5"]
+animation = &"Unarmed_Melee_Attack_Punch_B"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_77cv3"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o4joy"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "_wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6baxu"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "not _wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_erclm"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "not _wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i7t2j"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "_wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kski2"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "not _wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_v1gw7"]
+states/End/position = Vector2(448, 215)
+states/Unarmed_Melee_Attack_Kick/node = SubResource("AnimationNodeAnimation_elm5x")
+states/Unarmed_Melee_Attack_Kick/position = Vector2(448, 338)
+states/Unarmed_Melee_Attack_Punch_A/node = SubResource("AnimationNodeAnimation_wpvq8")
+states/Unarmed_Melee_Attack_Punch_A/position = Vector2(448, 100)
+states/Unarmed_Melee_Attack_Punch_B/node = SubResource("AnimationNodeAnimation_227s5")
+states/Unarmed_Melee_Attack_Punch_B/position = Vector2(843, 215)
+transitions = ["Start", "Unarmed_Melee_Attack_Punch_A", SubResource("AnimationNodeStateMachineTransition_77cv3"), "Unarmed_Melee_Attack_Punch_A", "Unarmed_Melee_Attack_Punch_B", SubResource("AnimationNodeStateMachineTransition_o4joy"), "Unarmed_Melee_Attack_Punch_A", "End", SubResource("AnimationNodeStateMachineTransition_6baxu"), "Unarmed_Melee_Attack_Punch_B", "End", SubResource("AnimationNodeStateMachineTransition_erclm"), "Unarmed_Melee_Attack_Punch_B", "Unarmed_Melee_Attack_Kick", SubResource("AnimationNodeStateMachineTransition_i7t2j"), "Unarmed_Melee_Attack_Kick", "End", SubResource("AnimationNodeStateMachineTransition_kski2")]
+graph_offset = Vector2(-427, 59.75)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kv82r"]
+animation = &"Unarmed_Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_58hys"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e1doa"]
+xfade_time = 0.25
+advance_mode = 2
+advance_expression = "_target or _wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_11vxm"]
+xfade_time = 0.25
+advance_mode = 2
+advance_expression = "not _target and not _wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kkcbe"]
+advance_mode = 2
+advance_expression = "_wants_to_attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jkuo1"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1vgpg"]
+states/End/position = Vector2(1050, 100)
+states/Idle/node = SubResource("AnimationNodeAnimation_enfu5")
+states/Idle/position = Vector2(562, 100)
+states/Start/position = Vector2(277, 100)
+states/Unarmed_Attack/node = SubResource("AnimationNodeStateMachine_v1gw7")
+states/Unarmed_Attack/position = Vector2(773, -32)
+states/Unarmed_Idle/node = SubResource("AnimationNodeAnimation_kv82r")
+states/Unarmed_Idle/position = Vector2(773, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_58hys"), "Idle", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_e1doa"), "Unarmed_Idle", "Idle", SubResource("AnimationNodeStateMachineTransition_11vxm"), "Unarmed_Idle", "Unarmed_Attack", SubResource("AnimationNodeStateMachineTransition_kkcbe"), "Unarmed_Attack", "Unarmed_Idle", SubResource("AnimationNodeStateMachineTransition_jkuo1")]
+graph_offset = Vector2(4, -90)
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_rckxy"]
+filter_enabled = true
+filters = [".", "Rig/Skeleton3D:chest", "Rig/Skeleton3D:hand.l", "Rig/Skeleton3D:hand.r", "Rig/Skeleton3D:handslot.l", "Rig/Skeleton3D:handslot.r", "Rig/Skeleton3D:head", "Rig/Skeleton3D:lowerarm.l", "Rig/Skeleton3D:lowerarm.r", "Rig/Skeleton3D:spine", "Rig/Skeleton3D:upperarm.l", "Rig/Skeleton3D:upperarm.r"]
+
+[resource]
+graph_offset = Vector2(-250.036, 31.2074)
+nodes/Action/node = SubResource("AnimationNodeStateMachine_1vgpg")
+nodes/Action/position = Vector2(-40, 240)
+nodes/Lower+Upper/node = SubResource("AnimationNodeBlend2_rckxy")
+nodes/Lower+Upper/position = Vector2(200, 120)
+nodes/Movement/node = ExtResource("1_m5ygp")
+nodes/Movement/position = Vector2(-40, 60)
+nodes/output/position = Vector2(480, 160)
+node_connections = [&"Lower+Upper", 0, &"Movement", &"Lower+Upper", 1, &"Action", &"output", 0, &"Lower+Upper"]
