@@ -15,3 +15,11 @@ enum EquipmentType
 	HEAD
 	
 }
+
+enum WeaponType
+{
+	UNARMED,			#0
+	ONEHANDED,			#1
+	TWOHANDED,			#2
+	DUALWIELDING		#3
+}

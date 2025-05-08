@@ -21,13 +21,17 @@ var _can_move : bool = true:
 		if not _can_move:
 			_direction = Vector3.ZERO
 
+
 #Combat Variables
 var _target : Node3D
 var _locked_on_blend : Vector2
+@onready var _unarmed_hit_box: Area3D = get_node_or_null("Rig/HitBox")
+@export_flags_3d_physics var _enemy_hurt_layer : int
 
 #Buffered Inputs
 var _wants_to_attack : bool
 var _wants_to_jump : bool
+
 
 @onready var _movement_speed : float = _walking_speed
 
@@ -53,7 +57,10 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @export_category("Equipment")
 @export var _sockets : Array[BoneAttachment3D]
-
+#@export var _attack_animations : Enums.WeaponType
+var _attack_animations : Enums.WeaponType
+var _main_hand : Node3D
+var _off_hand : Node3D
 
 #We to rotate and y with respect to the animation hence why se use the rig 
 @onready var _rig: Node3D = $Rig
@@ -66,6 +73,8 @@ signal destination_reached
 func _ready():
 	_min_jump_velocity = sqrt(_min_jump_height * _gravity * _mass * 2)
 	_max_jump_velocity = sqrt(_max_jump_height * _gravity * _mass * 2)
+	if _unarmed_hit_box:
+		_unarmed_hit_box.collision_mask = _enemy_hurt_layer
 
 
 func animate(animation_name : String, locked : bool = true) -> Signal:
@@ -91,7 +100,7 @@ func _stop(instance : Node3D):
 	if instance.has_method("set_collision_mask"):
 		instance.set_collision_mask(0)
 
-func use_item(item : Item):
+func use_item(item : ItemInfo):
 	var was_holding : Node3D
 	if _sockets[0].get_child_count() > 0:
 		was_holding = _sockets[0].get_child(0)
@@ -110,8 +119,25 @@ func don(item : Equipment):
 	var instance : Node3D = load(item.scene).instantiate()
 	_sockets[item.type].add_child(instance)
 	_stop(instance)
+	if item is Weapon:
+		_main_hand = instance
+		_main_hand.set_hit_box_collision_mask(_enemy_hurt_layer)
+		_attack_animations = item.weapon_type
+		if item.weapon_type == Enums.WeaponType.DUALWIELDING:
+			instance = load(item.scene).instantiate()
+			_sockets[Enums.EquipmentType.OFF_HAND].add_child(instance)
+			_stop(instance)
+			_off_hand = instance
+			_off_hand.set_hit_box_collision_mask(_enemy_hurt_layer)
 
 func doff(socket : int):
+	if socket == Enums.EquipmentType.MAIN_HAND:
+		_main_hand = null
+		if _attack_animations == Enums.WeaponType.DUALWIELDING:
+			doff(Enums.EquipmentType.OFF_HAND)
+		_attack_animations = Enums.WeaponType.UNARMED
+	elif socket == Enums.EquipmentType.OFF_HAND:
+		_off_hand = null
 	if _sockets[socket].get_child_count() > 0:
 		_sockets[socket].get_child(0).queue_free()
 
@@ -211,6 +237,15 @@ func attack():
 
 func cancel_attack():
 	_wants_to_attack = false
+
+func activate_hit_box(active : bool, which_hand : int = 1):
+	match which_hand:
+		0:
+			_unarmed_hit_box.monitoring = active
+		1:
+			_main_hand.activate_hit_box(active)
+		2:
+			_off_hand.activate_hit_box(active)
 
 #endregion
 

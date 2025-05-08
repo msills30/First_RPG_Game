@@ -33,7 +33,7 @@ func open_as_shop(shop : Shop) -> Signal:
 	open()
 	return closed
 
-func _generate_stock(stock : Array[Item]):
+func _generate_stock(stock : Array[ItemInfo]):
 	for item in stock:
 		_add_item_button(item, 1, _stock)
 
@@ -66,7 +66,7 @@ func open_as_inventory():
 
 #Remember bool always is set to false
 var is_open: bool
-var _selected_item : Item 
+var _selected_item : ItemInfo 
 var _selected_button : Button
 var _previously_selected_button : Button
 
@@ -90,14 +90,14 @@ func open(breadcrumb : Menu = null):
 	
 	is_open = true
 
-func add_item(item : Item, quantity : int = 1):
+func add_item(item : ItemInfo, quantity : int = 1):
 	if item is Stackable: 
 		_add_stackable_item(item, quantity)
 	else:
 		for i in quantity:
 			_add_single_item(item) 
 
-func _add_single_item(item: Item):
+func _add_single_item(item: ItemInfo):
 	File.progress.inventory.push_back({"name": item.name})
 	_add_item_button(item)
  
@@ -139,7 +139,7 @@ func _add_stackable_item(item : Stackable, quantity : int):
 		#_add_item_button(item, new_stack_quantity)
 		#quantity -= new_stack_quantity
 
-func _add_item_button(item : Item, quantity : int = 1, container : Container = _item_container):
+func _add_item_button(item : ItemInfo, quantity : int = 1, container : Container = _item_container):
 	var new_item_button : Button = PREFAB.instantiate()
 	new_item_button.get_node("Icon").texture = item.icon
 	_update_quantity(new_item_button, quantity)
@@ -156,7 +156,7 @@ func _update_quantity(button : Button, quantity : int):
 		button.get_node("Label").visible = false
 
 
-func _display_item_information(item : Item = null, button : Button = null):
+func _display_item_information(item : ItemInfo = null, button : Button = null):
 	_item_name.text = item.name if item else ""
 	_item_description.text = item.description if item else ""
 	_selected_item = item
@@ -235,6 +235,13 @@ func _equip_selected_item():
 	if File.progress.equipment[_selected_item.type] != -1:
 		_character.doff(_selected_item.type)
 		_item_container.get_child(File.progress.equipment[_selected_item.type]).get_node("Label").visible = false
+		
+	if _selected_item is Weapon and (_selected_item.weapon_type == Enums.WeaponType.TWOHANDED or _selected_item.weapon_type == Enums.WeaponType.DUALWIELDING):
+		if File.progress.equipment[Enums.EquipmentType.OFF_HAND] != -1:
+			_item_container.get_children()[File.progress.equipment[Enums.EquipmentType.OFF_HAND]].get_node('Label').visible == false
+			File.progress.equipment[Enums.EquipmentType.OFF_HAND] != -1
+		_character.doff(Enums.EquipmentType.OFF_HAND)
+		
 	File.progress.equipment[_selected_item.type] = _item_container.get_children().find(_selected_button)
 	_character.don(_selected_item)
 	_selected_button.get_node("Label").visible = true
@@ -267,7 +274,7 @@ func _on_drop_pressed():
 		_remove_item(_selected_item, 1, _selected_button)
 
 
-func _remove_item(item : Item, quantity : int = 1, button : Button = null):
+func _remove_item(item : ItemInfo, quantity : int = 1, button : Button = null):
 	if item is Stackable:
 		_remove_stackable_item(item, quantity, button)
 	else:
@@ -275,7 +282,7 @@ func _remove_item(item : Item, quantity : int = 1, button : Button = null):
 			_remove_single_item(item, button if i == 0 else null)
 
 
-func _remove_single_item(item: Item, button : Button):
+func _remove_single_item(item: ItemInfo, button : Button):
 	if button:
 		var index : int = _item_container.get_children().find(button)
 		File.progress.inventory.remove_at(index)
@@ -288,7 +295,7 @@ func _remove_single_item(item: Item, button : Button):
 			return
 
 
-func _remove_stackable_item(item : Item, quantity : int = 1, button : Button = null):
+func _remove_stackable_item(item : ItemInfo, quantity : int = 1, button : Button = null):
 	if button:
 		var index : int = _item_container.get_children().find(button)
 		File.progress.inventory[index].quantity -= quantity 

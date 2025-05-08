@@ -13,6 +13,7 @@ type = 1
 name = "Barbarian Round Shield"
 description = "No better shield than this "
 icon = SubResource("AtlasTexture_578am")
+value = 1
 scene = "res://Scenes/Assets/barbarian_round_shield.tscn"
 is_usable = false
 is_consumable = false

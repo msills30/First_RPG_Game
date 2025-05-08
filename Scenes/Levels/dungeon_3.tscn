@@ -60,7 +60,7 @@ monitoring = false
 script = ExtResource("5_mallh")
 _intro = "Thanks for coming please check out my wares"
 _outro = "Thank you come again"
-stock = Array[Resource("res://Scripts/custom_resources/Items/item.gd")]([ExtResource("6_adul8"), ExtResource("7_iv77i"), ExtResource("8_edstl")])
+stock = Array[Resource("res://Scripts/custom_resources/Items/item_info.gd")]([ExtResource("6_adul8"), ExtResource("7_iv77i"), ExtResource("8_edstl")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Knight/Shop"]
 transform = Transform3D(0.999861, 0, 0.016702, 0, 1, 0, -0.016702, 0, 0.999861, 0, 1.19, 0)

@@ -13,6 +13,7 @@ type = 2
 name = "Brown Cape"
 description = "I know its not a brown cape but its closed i can find"
 icon = SubResource("AtlasTexture_578am")
+value = 1
 scene = "res://Scenes/Assets/brown_cape.tscn"
 is_usable = false
 is_consumable = false

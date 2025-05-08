@@ -4,7 +4,7 @@ class_name Shop
 @export var _intro : String
 @export var _outro : String
 @export var markup : float = 10
-@export var stock : Array[Item]
+@export var stock : Array[ItemInfo]
 
 func run_event(em : EventManager):
 	await em.dialog.display_line(_intro)

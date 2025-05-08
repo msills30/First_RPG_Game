@@ -33,8 +33,9 @@ func _init():
 		{"name": "Knight Helmet"},
 		{"name": "Red Cape"},
 		{"name": "Brown Cape"},
-		{"name": "Crossbow"}
-		
+		{"name": "Crossbow"},
+		{"name": "Off Hand Knife"},
+		{"name": "Knife"}
 	]
 
 
