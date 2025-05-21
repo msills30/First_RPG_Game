@@ -82,6 +82,7 @@ func _input(event: InputEvent):
 		_character.cancel_attack()
 		
 	elif event.is_action_released("run"):
+		#_character.take_damage(2)
 		_character.walk()
 	
 	elif event.is_action_pressed('jump'):

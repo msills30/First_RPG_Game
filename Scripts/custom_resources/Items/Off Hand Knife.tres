@@ -10,7 +10,8 @@ region = Rect2(224, 160, 32, 32)
 [resource]
 script = ExtResource("2_5rqwb")
 weapon_type = 3
-type = 1
+damage = 2.0
+type = 0
 name = "Knife"
 description = "Stab em in the face "
 icon = SubResource("AtlasTexture_s0p85")

@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dd0h2ib7ov0bl"]
+[gd_scene load_steps=9 format=3 uid="uid://dd0h2ib7ov0bl"]
 
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_c5d10"]
 [ext_resource type="Texture2D" uid="uid://btijl2xofqh1o" path="res://imported_assets/character/imported_characters/Barbarian_barbarian_texture.png" id="1_f2ggy"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/weapon_hit.gd" id="1_jcyb6"]
 [ext_resource type="Resource" uid="uid://448dsobjs5xc" path="res://Scripts/custom_resources/Items/Great Axe.tres" id="2_akyr0"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_74yt7"]
-size = Vector3(1.2525, 1.85171, 0.327759)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8u4lt"]
 resource_name = "barbarian_texture"
@@ -47,17 +44,36 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_68d4f")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_74yt7"]
+size = Vector3(1.2525, 1.85171, 0.327759)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g145y"]
+radius = 0.843819
+height = 1.68764
+
 [node name="GreatAxe" type="RigidBody3D"]
 collision_layer = 32
 collision_mask = 801
-script = ExtResource("1_c5d10")
+script = ExtResource("1_jcyb6")
 resource = ExtResource("2_akyr0")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00601196, 0.393357, 0.0148315)
-shape = SubResource("BoxShape3D_74yt7")
 
 [node name="meshinstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 1.86265e-09, 0, 1, -7.45058e-09, -1.86265e-09, -7.45058e-09, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_vbqp1")
 skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00601196, 0.393357, 0.0148315)
+shape = SubResource("BoxShape3D_74yt7")
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.675128, 0)
+shape = SubResource("CapsuleShape3D_g145y")
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]

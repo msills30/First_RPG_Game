@@ -10,6 +10,7 @@ region = Rect2(32, 320, 32, 32)
 [resource]
 script = ExtResource("2_q1ynx")
 weapon_type = 1
+damage = 2.0
 type = 0
 name = "Axe"
 description = "Get the choppa ready"

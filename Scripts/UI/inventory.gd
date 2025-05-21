@@ -238,7 +238,7 @@ func _equip_selected_item():
 		
 	if _selected_item is Weapon and (_selected_item.weapon_type == Enums.WeaponType.TWOHANDED or _selected_item.weapon_type == Enums.WeaponType.DUALWIELDING):
 		if File.progress.equipment[Enums.EquipmentType.OFF_HAND] != -1:
-			_item_container.get_children()[File.progress.equipment[Enums.EquipmentType.OFF_HAND]].get_node('Label').visible == false
+			_item_container.get_children()[File.progress.equipment[Enums.EquipmentType.OFF_HAND]].get_node('Label').visible = false
 			File.progress.equipment[Enums.EquipmentType.OFF_HAND] != -1
 		_character.doff(Enums.EquipmentType.OFF_HAND)
 		

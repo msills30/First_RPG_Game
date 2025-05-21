@@ -1,6 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://sq4uq7btepsp"]
+[gd_scene load_steps=9 format=3 uid="uid://sq4uq7btepsp"]
 
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_obirx"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/weapon_hit.gd" id="1_o28rs"]
 [ext_resource type="Texture2D" uid="uid://djn0gmh0ahmdc" path="res://imported_assets/character/imported_characters/Rogue_rogue_texture.png" id="1_tmwna"]
 [ext_resource type="Resource" uid="uid://cvniqe2kj1iao" path="res://Scripts/custom_resources/Items/Off Hand Knife.tres" id="2_owffq"]
 
@@ -47,14 +47,32 @@ shadow_mesh = SubResource("ArrayMesh_2vcsr")
 [sub_resource type="BoxShape3D" id="BoxShape3D_hl1ju"]
 size = Vector3(0.38031, 1.23462, 0.214294)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_beghq"]
+radius = 0.730333
+height = 1.46161
+
 [node name="OffHandKnife" type="RigidBody3D"]
-script = ExtResource("1_obirx")
+collision_layer = 32
+collision_mask = 801
+script = ExtResource("1_o28rs")
 resource = ExtResource("2_owffq")
 
-[node name="Knife_Offhand" type="MeshInstance3D" parent="."]
+[node name="meshinstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_waiyj")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0226135, 0.377319, -0.0142517)
 shape = SubResource("BoxShape3D_hl1ju")
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.769428, 0)
+shape = SubResource("CapsuleShape3D_beghq")
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]

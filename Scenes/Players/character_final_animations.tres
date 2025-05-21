@@ -1,0 +1,78 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=17 format=3 uid="uid://8cmwslaa5v2b"]
+
+[ext_resource type="AnimationNodeBlendTree" uid="uid://co8el38f2whox" path="res://Scenes/Players/character_blend_tree.tres" id="1_5tpd5"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t8rpg"]
+animation = &"Death_A"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ts58u"]
+animation = &"Death_B"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yo0i4"]
+animation = &"Hit_A"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6xbk5"]
+animation = &"Hit_B"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f8gpp"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qv3gh"]
+xfade_time = 0.25
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2vwfn"]
+xfade_time = 0.25
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_448lq"]
+xfade_time = 0.25
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pcff2"]
+xfade_time = 0.25
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_kwx0k"]
+states/BlendTree/node = ExtResource("1_5tpd5")
+states/BlendTree/position = Vector2(517, 94)
+states/Hit_A/node = SubResource("AnimationNodeAnimation_yo0i4")
+states/Hit_A/position = Vector2(518, -16)
+states/Hit_B/node = SubResource("AnimationNodeAnimation_6xbk5")
+states/Hit_B/position = Vector2(517, 224)
+transitions = ["Start", "BlendTree", SubResource("AnimationNodeStateMachineTransition_f8gpp"), "BlendTree", "Hit_A", SubResource("AnimationNodeStateMachineTransition_qv3gh"), "Hit_A", "BlendTree", SubResource("AnimationNodeStateMachineTransition_2vwfn"), "BlendTree", "Hit_B", SubResource("AnimationNodeStateMachineTransition_448lq"), "Hit_B", "BlendTree", SubResource("AnimationNodeStateMachineTransition_pcff2")]
+graph_offset = Vector2(-109, 43)
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6sogn"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ywnno"]
+xfade_time = 0.25
+advance_mode = 2
+advance_expression = "_is_dead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fl8ka"]
+xfade_time = 0.25
+priority = 0
+advance_mode = 2
+advance_expression = "_is_dead & _from_behind"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7rpdd"]
+advance_mode = 2
+advance_expression = "not _is_dead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u8mlk"]
+advance_mode = 2
+advance_expression = "not _is_dead"
+
+[resource]
+states/Death_A/node = SubResource("AnimationNodeAnimation_t8rpg")
+states/Death_A/position = Vector2(561, -87)
+states/Death_B/node = SubResource("AnimationNodeAnimation_ts58u")
+states/Death_B/position = Vector2(561, 248)
+states/End/position = Vector2(833, 100)
+states/Hit/node = SubResource("AnimationNodeStateMachine_kwx0k")
+states/Hit/position = Vector2(561, 100)
+states/Start/position = Vector2(279, 100)
+transitions = ["Start", "Hit", SubResource("AnimationNodeStateMachineTransition_6sogn"), "Hit", "Death_A", SubResource("AnimationNodeStateMachineTransition_ywnno"), "Hit", "Death_B", SubResource("AnimationNodeStateMachineTransition_fl8ka"), "Death_A", "Hit", SubResource("AnimationNodeStateMachineTransition_7rpdd"), "Death_B", "Hit", SubResource("AnimationNodeStateMachineTransition_u8mlk")]
+graph_offset = Vector2(-157, -88.2678)

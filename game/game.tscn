@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://clrxy7rjmm77c"]
+[gd_scene load_steps=54 format=3 uid="uid://clrxy7rjmm77c"]
 
 [ext_resource type="Script" path="res://Scripts/managers/game_manager.gd" id="1_4f54o"]
 [ext_resource type="Script" path="res://Scripts/character/player.gd" id="1_fg5j3"]
@@ -23,6 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://c6iucxik3vvek" path="res://imported_assets/Icons/Icon_Small_Blank_Arrow.png" id="10_sqvpi"]
 [ext_resource type="PackedScene" uid="uid://cqmp5p64w30fm" path="res://Scenes/Players/mage.tscn" id="10_u6s31"]
 [ext_resource type="AudioStream" uid="uid://1e5512okp5ge" path="res://SFX/collect.wav" id="12_5nn2v"]
+[ext_resource type="Texture2D" uid="uid://dhqg4xtll6sk1" path="res://imported_assets/Sliders/SlimSlider_Frame.png" id="12_dmhe7"]
+[ext_resource type="Script" path="res://Scripts/UI/gauge.gd" id="12_lpy0x"]
+[ext_resource type="Texture2D" uid="uid://cer7fdcsdcddq" path="res://imported_assets/Icons/Icon_Large_HeartFull.png" id="13_aancd"]
 [ext_resource type="Texture2D" uid="uid://bpbqdmvqifepm" path="res://imported_assets/Icons/SVG/Icon_Small_Coin.svg" id="13_rbcfg"]
 [ext_resource type="Script" path="res://Scripts/Events/intro.gd" id="17_14a2v"]
 [ext_resource type="Theme" uid="uid://dkhudfcfh6qpb" path="res://Themes/inventory.tres" id="23_7ydtn"]
@@ -139,7 +142,7 @@ one_shot = true
 [node name="Barbarian" parent="." instance=ExtResource("2_eaiwr")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.48879, 1.22297, 11.8316)
-collision_mask = 801
+collision_mask = 803
 _walking_speed = 2.0
 _running_speed = 4.0
 _acceleration = 8.0
@@ -214,6 +217,42 @@ script = ExtResource("6_m30pd")
 script = ExtResource("7_8clv0")
 
 [node name="UserInterface" type="CanvasLayer" parent="."]
+
+[node name="HealthGauge" type="Control" parent="UserInterface"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = -80.0
+offset_right = 45.0
+offset_bottom = -80.0
+grow_vertical = 0
+script = ExtResource("12_lpy0x")
+
+[node name="Fill" type="ColorRect" parent="UserInterface/HealthGauge"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 8.0
+offset_right = 354.0
+offset_bottom = 42.0
+color = Color(0.862745, 0, 0.243137, 1)
+
+[node name="Border" type="TextureRect" parent="UserInterface/HealthGauge"]
+layout_mode = 0
+offset_right = 1467.0
+offset_bottom = 213.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("12_dmhe7")
+
+[node name="Icon" type="TextureRect" parent="UserInterface/HealthGauge"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = -50.0
+offset_right = 238.0
+offset_bottom = 179.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("13_aancd")
 
 [node name="Wallet" type="HBoxContainer" parent="UserInterface"]
 unique_name_in_owner = true
@@ -573,6 +612,7 @@ script = ExtResource("17_14a2v")
 [connection signal="targeted" from="Player" to="Barbarian" method="_on_player_targeted"]
 [connection signal="targeted" from="Player" to="Barbarian/CameraHolder" method="_on_player_targeted"]
 [connection signal="targeted" from="Player" to="Barbarian/CameraHolder/Camera3D" method="_on_player_targeted"]
+[connection signal="health_changed" from="Barbarian" to="UserInterface/HealthGauge" method="set_value"]
 [connection signal="target_exit_range" from="Barbarian/CameraHolder/Camera3D" to="Player" method="toggle_lock"]
 [connection signal="body_entered" from="Barbarian/CameraHolder/Camera3D/TargetRange" to="Barbarian/CameraHolder/Camera3D" method="_on_target_range_body_entered"]
 [connection signal="body_exited" from="Barbarian/CameraHolder/Camera3D/TargetRange" to="Barbarian/CameraHolder/Camera3D" method="_on_target_range_body_exited"]

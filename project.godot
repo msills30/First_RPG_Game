@@ -145,6 +145,8 @@ attack={
 3d_physics/layer_9="Player"
 3d_physics/layer_10="NPC"
 3d_physics/layer_11="Enemy"
+3d_physics/layer_17="Character Hurt"
+3d_physics/layer_18="Enemy Hurt"
 
 [physics]
 

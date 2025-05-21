@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dug4k65beakwf"]
+[gd_scene load_steps=9 format=3 uid="uid://dug4k65beakwf"]
 
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/weapon_hit.gd" id="1_1c8bb"]
 [ext_resource type="Texture2D" uid="uid://djn0gmh0ahmdc" path="res://imported_assets/character/imported_characters/Rogue_rogue_texture.png" id="1_1ldst"]
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_ne1d0"]
 [ext_resource type="Resource" uid="uid://vs3r8tvxj22s" path="res://Scripts/custom_resources/Items/Knife.tres" id="2_541k2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgu1o"]
@@ -47,15 +47,33 @@ shadow_mesh = SubResource("ArrayMesh_v57rh")
 [sub_resource type="BoxShape3D" id="BoxShape3D_26osv"]
 size = Vector3(0.408203, 1.2373, 0.172729)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jk2rl"]
+radius = 0.328804
+height = 0.829646
+
 [node name="Knife" type="RigidBody3D"]
-script = ExtResource("1_ne1d0")
+collision_layer = 32
+collision_mask = 801
+script = ExtResource("1_1c8bb")
 resource = ExtResource("2_541k2")
 
 [node name="meshinstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1.8239e-08, 2.98847e-07, 1, -1.48187e-07, 1, -2.98847e-07, -1, -1.48187e-07, -1.82389e-08, 0, 0.0103585, 0.104628)
+transform = Transform3D(-1.8239e-08, 2.98847e-07, 1, -1.48187e-07, 1, -2.98847e-07, -1, -1.48187e-07, -1.82389e-08, 9.31323e-10, 0.0103585, 0.104628)
 mesh = SubResource("ArrayMesh_md0dh")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1.8239e-08, 2.98847e-07, 1, -1.48187e-07, 1, -2.98847e-07, -1, -1.48187e-07, -1.82389e-08, -0.0101929, 0.395862, 0.0938859)
 shape = SubResource("BoxShape3D_26osv")
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.601112, 0.075217)
+shape = SubResource("CapsuleShape3D_jk2rl")
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
