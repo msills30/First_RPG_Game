@@ -79,5 +79,12 @@ func _on_exit_pressed():
 	change_scene('res://Scenes/title.tscn')
 
 
+
 func _on_settings_pressed():
 	_settings_menu.open(_pause_menu)
+
+
+
+func _on_character_died():
+	await _fade.to_black()
+	change_scene('res://Scenes/title.tscn')

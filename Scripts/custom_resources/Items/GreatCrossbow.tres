@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://bfg06nqk4ckjh"]
+
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_o0puc"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/weapon.gd" id="2_6oy4u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lydmn"]
+atlas = ExtResource("1_o0puc")
+region = Rect2(96, 192, 32, 32)
+
+[resource]
+script = ExtResource("2_6oy4u")
+weapon_type = 5
+damage = 1.0
+type = 0
+name = "Great Crossbow"
+description = "So great that you need two hands"
+icon = SubResource("AtlasTexture_lydmn")
+value = 1
+scene = "res://Scenes/Assets/great_cross_bow.tscn"
+is_usable = false
+is_consumable = false

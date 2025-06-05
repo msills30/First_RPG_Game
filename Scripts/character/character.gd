@@ -26,19 +26,31 @@ var _can_move : bool = true:
 #Combat Variables
 @export_category("Combat")
 @export var _max_health : int = 5
+@export var _dodge_force : float = 8
 @onready var _current_health : = _max_health
 @onready var _unarmed_hit_box: Area3D = get_node_or_null("Rig/HitBox")
 @export_flags_3d_physics var _enemy_hurt_layer : int
 @onready var _hurt_box: Area3D = $HurtBox
+
+
 var _is_dead : bool 
+#The @export is so that animation has access
+@export var _is_attacking : bool
+@export var _is_dodging : bool
+@export var _is_hit : bool
 var _from_behind : bool
 var _target : Node3D
 var _locked_on_blend : Vector2
-
+var _dodge_direction : Vector3
+var _interrupt_block : bool
+var _weapon_is_loaded : bool
 
 #Buffered Inputs
 var _wants_to_attack : bool
 var _wants_to_jump : bool
+var _wants_to_dodge : bool
+var _wants_to_block : bool
+
 
 #Damage Signals
 signal health_changed(percentage: float)
@@ -65,17 +77,19 @@ var _max_jump_velocity : float
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
-
 @export_category("Equipment")
 @export var _sockets : Array[BoneAttachment3D]
 #@export var _attack_animations : Enums.WeaponType
 var _attack_animations : Enums.WeaponType
 var _main_hand : Node3D
 var _off_hand : Node3D
+var _has_shield_equipped : bool
 
 #We to rotate and y with respect to the animation hence why se use the rig 
 @onready var _rig: Node3D = $Rig
 @onready var _animation: AnimationScript = $AnimationTree as AnimationScript
+@onready var _navigation: NavigationAgent3D = $NavigationAgent3D
+
 
 signal animation_finished(successful : bool)
 
@@ -135,10 +149,10 @@ func don(item : Equipment):
 	instance.freeze = true
 	_stop(instance)
 	
-	print("character position;",_character.global_transform.origin)
-	print("Added item to socket:", _sockets[item.type].get_child_count())
-	print("Socket position:", _sockets[item.type].global_transform.origin)
-	print("Item position:", instance.global_transform.origin)
+	#print("character position;",_character.global_transform.origin)
+	#print("Added item to socket:", _sockets[item.type].get_child_count())
+	#print("Socket position:", _sockets[item.type].global_transform.origin)
+	#print("Item position:", instance.global_transform.origin)
 	
 	
 	if item is Weapon:
@@ -154,15 +168,22 @@ func don(item : Equipment):
 			_off_hand = instance
 			_off_hand.damage = item.damage
 			_off_hand.set_hit_box_collision_mask(_enemy_hurt_layer)
+	
+	if item is Shield:
+		_off_hand = instance
+		instance.damage_reduction = item.damage_reduction
+		_has_shield_equipped = true
 
 func doff(socket : int):
 	if socket == Enums.EquipmentType.MAIN_HAND:
 		_main_hand = null
+		_weapon_is_loaded = false
 		if _attack_animations == Enums.WeaponType.DUALWIELDING:
 			doff(Enums.EquipmentType.OFF_HAND)
 		_attack_animations = Enums.WeaponType.UNARMED
 	elif socket == Enums.EquipmentType.OFF_HAND:
 		_off_hand = null
+		_has_shield_equipped = false
 	if _sockets[socket].get_child_count() > 0:
 		_sockets[socket].get_child(0).queue_free()
 
@@ -171,6 +192,12 @@ func doff(socket : int):
 #If you want to radians to be in degrees
 #func _ready() -> void:
 	#_rotation_speed = deg_to_rad(_rotation_speed)
+
+func navigate_to(destination : Vector3):
+	_navigation.target_position = destination
+	_direction = ((_navigation.get_next_path_position() - global_position) * Vector3(1, 0, 1)).normalized()
+	
+
 
 func face_direction(foward_direction: float):
 	_rig.rotation.y = foward_direction 
@@ -181,9 +208,10 @@ func get_rig_rotation() -> Vector3:
 
 
 func move(direction : Vector3):
-	if not _can_move:
+	if not _can_move or _is_dead:
 		return
 	_direction = direction
+
 
 func move_to_marker(marker : Node3D, allowable_distance : float = 0.25, running : bool = false) -> Signal:
 	var path : Vector3 = marker.global_position - global_position
@@ -200,6 +228,7 @@ func move_to_marker(marker : Node3D, allowable_distance : float = 0.25, running 
 		walk()
 	destination_reached.emit()
 	return destination_reached
+
 
 func follow_path(path, allowable_distance : float = 0.25, running : bool = false) -> Signal:
 	var next_point: int = 0
@@ -232,9 +261,14 @@ func run():
 func restrict_movement(cannot_move: bool):
 	_can_move = not cannot_move
 
+
 func start_jump():
+	if _is_dead:
+		return
 	_wants_to_jump = true
 	_wants_to_attack = false
+	_wants_to_dodge = false
+
 
 func complete_jump():
 	_jump_hold.paused = true
@@ -245,8 +279,10 @@ func apply_jump_velocity():
 	if is_on_floor():
 		velocity.y = _min_jump_velocity + (_max_jump_velocity - _min_jump_velocity) * min(1 - _jump_hold.time_left, 0.3) / 0.3
 
+
 func cancel_jump():
 	_wants_to_jump = false
+
 
 func interact():
 	if _interact_range &&  _interact_range.is_colliding() && _interact_range.get_collider().has_method('interact'):
@@ -261,9 +297,37 @@ func _on_player_targeted(new_target: Node3D):
 func attack():
 	_wants_to_attack = true
 	_wants_to_jump = false
+	_wants_to_dodge = false
+	_interrupt_block = true
 
 func cancel_attack():
 	_wants_to_attack = false
+	_interrupt_block = false
+
+func dodge():
+	_wants_to_dodge = true
+	_wants_to_jump = false
+	_wants_to_attack = false
+	_interrupt_block = true
+	if _direction == Vector3.ZERO:
+		_dodge_direction = _rig.global_basis.z * -1
+	else:
+		_dodge_direction = _direction.normalized()
+	_animation.set_dodge_blend(Vector2(_dodge_direction.dot(_rig.global_basis.x) * -1, _dodge_direction.dot(_rig.global_basis.z)))
+
+func cancel_dodge():
+	_wants_to_dodge = false
+	_interrupt_block = false
+
+
+func apply_dodge_velocity():
+	cancel_dodge()
+	velocity = _dodge_direction * _dodge_force
+
+
+func activate_hurt_box(active : bool):
+	_hurt_box.set_deferred("monitorable", active)
+
 
 func activate_hit_box(active : bool, which_hand : int = 1):
 	match which_hand:
@@ -274,26 +338,56 @@ func activate_hit_box(active : bool, which_hand : int = 1):
 		2:
 			_off_hand.activate_hit_box(active)
 
+
 func _on_hit_box_area_entered(hurt_box: Area3D):
 	hurt_box.get_parent().take_damage(1, (global_position - hurt_box.global_position).normalized())
 
+
 func take_damage(amount : int, direction : Vector3 = Vector3.ZERO):
+	if _animation.is_blocking() and direction.dot(_rig.global_basis.z) > 0.5:
+		amount = max(amount - _off_hand.damage_reduction, 0)
+		_animation.block_hit()
+		if amount == 0:
+			return
+		
 	_current_health = max(_current_health - amount, 0)
 	_interrupt_action()
 	health_changed.emit(float(_current_health) / _max_health)
 	_from_behind = direction.dot(_rig.global_basis.z) < 0
 	if _current_health == 0:
-		_is_dead = true
-		died.emit()
-		collision_layer = 0
-		collision_mask = 1
-		_hurt_box.set_deferred("monitorable", false)
+		die()
 	else:
 		_animation.get_hit(amount < 2)
 
+func die():
+	move(Vector3.ZERO)
+	_is_dead = true
+	_is_hit = false
+	died.emit()
+	collision_layer = 0
+	collision_mask = 1
+	_hurt_box.set_deferred("monitorable", false)
+
+
+func block(should_block : bool):
+	_wants_to_block = should_block and _has_shield_equipped
+
+func shoot():
+	_weapon_is_loaded = false
+	if _target and _rig.global_basis.z.dot((_target.global_position - global_position).normalized()) > 0.75:
+		_main_hand.shoot_at_target(_target)
+	else:
+		_main_hand.shoot(_rig.global_basis.z)
+
+func reload():
+	_weapon_is_loaded = true
+	_main_hand.reload()
 
 func _interrupt_action():
+	_is_attacking = false
+	_is_dodging = false
 	deactivate_all_hit_boxes()
+	activate_hurt_box(true)
 
 
 func deactivate_all_hit_boxes():
@@ -303,6 +397,7 @@ func deactivate_all_hit_boxes():
 		_main_hand.activate_hit_box(false)
 	if _off_hand:
 		_off_hand.activate_hit_box(false) 
+
 
 #endregion
 

@@ -25,15 +25,16 @@ func _init():
 	coins = 10
 	inventory = [
 		{"name" : "Health Potion", "quantity" : 98},
-		{"name" : "Axe"},
-		{"name" : "Off Hand Axe"},
 		{"name" : "Great Axe"},
-		{"name": "Barbarian Round Shield"},
+		{"name" : "Off Hand Axe"},
+		{"name" : "Axe"}, #This is where the equipped item is at
+		{"name": "Barbarian Round Shield"}, #This is where the equipped item is at
 		{"name": "Barbarian Hat"},
 		{"name": "Knight Helmet"},
 		{"name": "Red Cape"},
 		{"name": "Brown Cape"},
 		{"name": "Crossbow"},
+		{"name": "GreatCrossbow"},
 		{"name": "Off Hand Knife"},
 		{"name": "Knife"}
 	]

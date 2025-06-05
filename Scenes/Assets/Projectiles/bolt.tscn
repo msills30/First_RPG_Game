@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://brgok4urb77ic"]
+
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/projectile.gd" id="1_sca2b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rvqm8"]
+albedo_color = Color(0.486275, 0.25098, 0.133333, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_guocw"]
+material = SubResource("StandardMaterial3D_rvqm8")
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.9
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fxndg"]
+height = 0.90269
+radius = 0.0254023
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_t7lkm"]
+radius = 0.0540035
+
+[node name="Bolt" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.45107)
+collision_layer = 0
+gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_sca2b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_guocw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_fxndg")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.42772)
+shape = SubResource("SphereShape3D_t7lkm")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]

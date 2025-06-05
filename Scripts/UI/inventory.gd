@@ -241,7 +241,10 @@ func _equip_selected_item():
 			_item_container.get_children()[File.progress.equipment[Enums.EquipmentType.OFF_HAND]].get_node('Label').visible = false
 			File.progress.equipment[Enums.EquipmentType.OFF_HAND] != -1
 		_character.doff(Enums.EquipmentType.OFF_HAND)
-		
+	elif _selected_item is Shield and File.progress.equipment[Enums.EquipmentType.MAIN_HAND] != -1 and (_character._attack_animations == Enums.WeaponType.TWOHANDED or _character._attack_animations == Enums.WeaponType.DUALWIELDING):
+		_item_container.get_children()[File.progress.equipment[Enums.EquipmentType.MAIN_HAND]].get_node('Label').visible = false
+		File.progress.equipment[Enums.EquipmentType.MAIN_HAND] != -1
+		_character.doff(Enums.EquipmentType.MAIN_HAND)
 	File.progress.equipment[_selected_item.type] = _item_container.get_children().find(_selected_button)
 	_character.don(_selected_item)
 	_selected_button.get_node("Label").visible = true

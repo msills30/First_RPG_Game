@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4pakh7rd8qyd"]
+[gd_scene load_steps=9 format=3 uid="uid://c4pakh7rd8qyd"]
 
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_2qwhb"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/ranged_weapon.gd" id="1_fsts2"]
+[ext_resource type="PackedScene" uid="uid://doqo8i4v72gdg" path="res://Scenes/Assets/Projectiles/white_bolt.tscn" id="2_snyye"]
 [ext_resource type="Resource" uid="uid://dyk3qajxxbhek" path="res://Scripts/custom_resources/Items/Crossbow.tres" id="2_u4jrf"]
 [ext_resource type="Texture2D" uid="uid://djn0gmh0ahmdc" path="res://imported_assets/character/imported_characters/Rogue_rogue_texture.png" id="3_0rloi"]
 
@@ -48,16 +49,20 @@ shadow_mesh = SubResource("ArrayMesh_klmdy")
 size = Vector3(1, 0.401489, 1.47363)
 
 [node name="Crossbow" type="RigidBody3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 collision_layer = 32
 collision_mask = 801
-script = ExtResource("1_2qwhb")
+script = ExtResource("1_fsts2")
+_ammo_prefab = ExtResource("2_snyye")
 resource = ExtResource("2_u4jrf")
 
 [node name="meshinstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, -3.94737e-14, 5.68434e-14, 1, 1.42109e-14, 2.18933e-14, -3.55271e-15, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_582d5")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0308228, 0.434082)
 shape = SubResource("BoxShape3D_5x2ne")
+
+[node name="AmmoSocket" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)

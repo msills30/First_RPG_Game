@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5xhen6jmbvde"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/aggression.gd" id="1_iqsj1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4xpao"]
+radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xv0fr"]
+radius = 5.0
+
+[node name="Aggression" type="Node3D"]
+script = ExtResource("1_iqsj1")
+
+[node name="AttackRange" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 65536
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
+shape = SubResource("SphereShape3D_4xpao")
+
+[node name="FieldOfVision" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 256
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FieldOfVision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+shape = SubResource("SphereShape3D_xv0fr")
+
+[node name="LineOfSight" type="RayCast3D" parent="FieldOfVision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_mask = 257
+
+[connection signal="area_entered" from="AttackRange" to="." method="_on_attack_range_area_entered"]
+[connection signal="area_exited" from="AttackRange" to="." method="_on_attack_range_area_exited"]
+[connection signal="body_entered" from="FieldOfVision" to="." method="_on_field_of_vision_body_entered"]
+[connection signal="body_exited" from="FieldOfVision" to="." method="_on_field_of_vision_body_exited"]

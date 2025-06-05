@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b7u1vcr1q2wvq"]
 
 [ext_resource type="Texture2D" uid="uid://btijl2xofqh1o" path="res://imported_assets/character/imported_characters/Barbarian_barbarian_texture.png" id="1_032y1"]
-[ext_resource type="Script" path="res://Scripts/item.gd" id="1_p2p2t"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/shield_effect.gd" id="1_lhebb"]
 [ext_resource type="Resource" uid="uid://d2x2o32glnkfk" path="res://Scripts/custom_resources/Items/Barbarian Round Shield.tres" id="2_5oy25"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_j21al"]
@@ -51,7 +51,7 @@ shadow_mesh = SubResource("ArrayMesh_51nvi")
 [node name="BarbarianRoundShield" type="RigidBody3D"]
 collision_layer = 32
 collision_mask = 801
-script = ExtResource("1_p2p2t")
+script = ExtResource("1_lhebb")
 resource = ExtResource("2_5oy25")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

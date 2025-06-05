@@ -75,15 +75,26 @@ func _input(event: InputEvent):
 	elif event.is_action_pressed("run"):
 		_character.run()
 	
+	elif event.is_action_released("run"):
+		#_character.take_damage(2)
+		_character.walk()
+	
 	elif event.is_action_pressed("attack"):
 		_character.attack()
 		_input_buffer.start()
 		await _input_buffer.timeout
 		_character.cancel_attack()
 		
-	elif event.is_action_released("run"):
-		#_character.take_damage(2)
-		_character.walk()
+	elif event.is_action_pressed("dodge"):
+		_character.dodge()
+		_input_buffer.start()
+		await _input_buffer.timeout
+		_character.cancel_dodge()
+	
+	if event.is_action_pressed('block'):
+		_character.block(true)
+	elif event.is_action_released('block'):
+		_character.block(false)
 	
 	elif event.is_action_pressed('jump'):
 		_character.start_jump()

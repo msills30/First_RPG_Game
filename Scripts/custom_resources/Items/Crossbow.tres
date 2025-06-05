@@ -1,18 +1,20 @@
-[gd_resource type="Resource" script_class="Equipment" load_steps=4 format=3 uid="uid://dyk3qajxxbhek"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://dyk3qajxxbhek"]
 
-[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_eqo74"]
-[ext_resource type="Script" path="res://Scripts/custom_resources/Items/equipment.gd" id="2_8pshr"]
+[ext_resource type="Texture2D" uid="uid://c6lk3q5t1iuno" path="res://imported_assets/Icons/#1 - Transparent Icons.png" id="1_7y4uv"]
+[ext_resource type="Script" path="res://Scripts/custom_resources/Items/weapon.gd" id="1_f0x6b"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_578am"]
-atlas = ExtResource("1_eqo74")
+[sub_resource type="AtlasTexture" id="AtlasTexture_lydmn"]
+atlas = ExtResource("1_7y4uv")
 region = Rect2(128, 192, 32, 32)
 
 [resource]
-script = ExtResource("2_8pshr")
+script = ExtResource("1_f0x6b")
+weapon_type = 4
+damage = 1.0
 type = 0
 name = "Crossbow"
-description = "Long distance combat is fighting smart"
-icon = SubResource("AtlasTexture_578am")
+description = "Don't bring knife to a CrossBow fight"
+icon = SubResource("AtlasTexture_lydmn")
 value = 1
 scene = "res://Scenes/Assets/cross_bow.tscn"
 is_usable = false
